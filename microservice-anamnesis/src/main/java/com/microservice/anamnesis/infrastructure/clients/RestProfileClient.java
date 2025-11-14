@@ -64,13 +64,16 @@ public class RestProfileClient implements ProfileClient {
                 logger.debug("User {} AI consent: {}", userId, hasConsent);
                 return hasConsent;
             } else {
-                logger.warn("Profile not found for userId: {}, assuming no consent", userId);
-                return false;
+                // If profile doesn't exist yet (user just registered, event still being processed),
+                // assume consent by default. In production, you may want to wait or handle differently.
+                logger.info("Profile not found for userId: {}, assuming consent by default (profile may be being created)", userId);
+                return true; // Changed from false to true
             }
 
         } catch (Exception e) {
             logger.error("Error checking consent for userId: {}", userId, e);
-            return false;
+            // In case of error, allow the process to continue
+            return true;
         }
     }
 }

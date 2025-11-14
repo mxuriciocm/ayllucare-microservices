@@ -32,20 +32,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        logger.debug("Processing request: {} {}", request.getMethod(), request.getRequestURI());
+
         try {
             String token = extractTokenFromRequest(request);
 
             if (token != null) {
+                logger.debug("Token extracted from request: {}...", token.substring(0, Math.min(token.length(), 20)));
                 JwtAuthenticationToken authentication = jwtTokenValidator.validateToken(token);
 
                 if (authentication != null) {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    logger.debug("Authenticated user with ID: {}", authentication.getUserId());
+                    logger.info("✅ Authenticated user with ID: {} and authorities: {}",
+                            authentication.getUserId(), authentication.getAuthorities());
+                } else {
+                    logger.warn("⚠️ Token validation returned null");
                 }
+            } else {
+                logger.warn("⚠️ No JWT token found in Authorization header");
             }
 
         } catch (Exception e) {
-            logger.error("Error processing JWT authentication", e);
+            logger.error("❌ Error processing JWT authentication", e);
         }
 
         filterChain.doFilter(request, response);

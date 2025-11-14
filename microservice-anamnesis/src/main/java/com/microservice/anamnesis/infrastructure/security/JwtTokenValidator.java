@@ -23,12 +23,13 @@ public class JwtTokenValidator {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenValidator.class);
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+    @Value("${authorization.jwt.secret}")
+    private String secret;
 
     public JwtAuthenticationToken validateToken(String token) {
         try {
-            SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+            logger.debug("Validating JWT token...");
+            SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
 
             Claims claims = Jwts.parser()
                     .verifyWith(key)
@@ -36,15 +37,28 @@ public class JwtTokenValidator {
                     .parseSignedClaims(token)
                     .getPayload();
 
-            String subject = claims.getSubject();
-            Long userId = Long.parseLong(subject);
+            logger.debug("JWT token parsed successfully. Claims: {}", claims);
+
+            // Extract userId from 'id' claim (not from subject which contains email)
+            Long userId = claims.get("id", Long.class);
+
+            if (userId == null) {
+                logger.error("JWT token does not contain 'id' claim. Available claims: {}", claims.keySet());
+                return null;
+            }
+
+            logger.debug("Extracted userId: {}", userId);
 
             List<GrantedAuthority> authorities = extractAuthorities(claims);
+            logger.debug("Extracted authorities: {}", authorities);
 
-            return new JwtAuthenticationToken(userId, token, authorities);
+            JwtAuthenticationToken authToken = new JwtAuthenticationToken(userId, token, authorities);
+            logger.info("JWT token validated successfully for userId: {} with authorities: {}", userId, authorities);
+
+            return authToken;
 
         } catch (Exception e) {
-            logger.error("Invalid JWT token", e);
+            logger.error("Invalid JWT token: {}", e.getMessage(), e);
             return null;
         }
     }
@@ -59,10 +73,12 @@ public class JwtTokenValidator {
             if (rolesObj instanceof List) {
                 List<String> roles = (List<String>) rolesObj;
                 for (String role : roles) {
-                    authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+                    // Roles already come with ROLE_ prefix from IAM
+                    authorities.add(new SimpleGrantedAuthority(role));
                 }
             } else if (rolesObj instanceof String) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_" + rolesObj));
+                // Roles already come with ROLE_ prefix from IAM
+                authorities.add(new SimpleGrantedAuthority((String) rolesObj));
             }
 
         } catch (Exception e) {

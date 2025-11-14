@@ -16,7 +16,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,9 +51,9 @@ public class AnamnesisSessionsController {
             }
     )
     public ResponseEntity<AnamnesisSessionResource> createSession(
-            @AuthenticationPrincipal JwtAuthenticationToken authentication,
             @Valid @RequestBody CreateAnamnesisSessionResource resource) {
 
+        JwtAuthenticationToken authentication = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Long userId = authentication.getUserId();
         var command = StartAnamnesisSessionCommandFromResourceAssembler.toCommandFromResource(userId, resource);
 
@@ -81,10 +81,10 @@ public class AnamnesisSessionsController {
             }
     )
     public ResponseEntity<AnamnesisSessionDetailResource> addMessage(
-            @AuthenticationPrincipal JwtAuthenticationToken authentication,
             @PathVariable Long sessionId,
             @Valid @RequestBody AddMessageResource resource) {
 
+        JwtAuthenticationToken authentication = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Long userId = authentication.getUserId();
         var command = AddMessageToSessionCommandFromResourceAssembler.toCommandFromResource(sessionId, userId, resource);
 
@@ -111,9 +111,9 @@ public class AnamnesisSessionsController {
             }
     )
     public ResponseEntity<AnamnesisSessionResource> completeSession(
-            @AuthenticationPrincipal JwtAuthenticationToken authentication,
             @PathVariable Long sessionId) {
 
+        JwtAuthenticationToken authentication = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Long userId = authentication.getUserId();
         var command = new CompleteAnamnesisSessionCommand(sessionId, userId);
 
@@ -137,9 +137,9 @@ public class AnamnesisSessionsController {
                     @ApiResponse(responseCode = "401", description = "Unauthorized")
             }
     )
-    public ResponseEntity<List<AnamnesisSessionResource>> getUserSessions(
-            @AuthenticationPrincipal JwtAuthenticationToken authentication) {
+    public ResponseEntity<List<AnamnesisSessionResource>> getUserSessions() {
 
+        JwtAuthenticationToken authentication = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Long userId = authentication.getUserId();
         var query = new GetSessionsByUserIdQuery(userId);
         var sessions = queryService.handle(query);
@@ -164,8 +164,9 @@ public class AnamnesisSessionsController {
             }
     )
     public ResponseEntity<AnamnesisSessionDetailResource> getSession(
-            @AuthenticationPrincipal JwtAuthenticationToken authentication,
             @PathVariable Long sessionId) {
+
+        JwtAuthenticationToken authentication = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 
         var query = new GetSessionByIdQuery(sessionId);
         var session = queryService.handle(query);
@@ -199,8 +200,9 @@ public class AnamnesisSessionsController {
             }
     )
     public ResponseEntity<AnamnesisSummaryResource> getSessionSummary(
-            @AuthenticationPrincipal JwtAuthenticationToken authentication,
             @PathVariable Long sessionId) {
+
+        JwtAuthenticationToken authentication = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 
         var query = new GetSessionByIdQuery(sessionId);
         var session = queryService.handle(query);
