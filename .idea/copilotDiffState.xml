@@ -85,35 +85,11 @@
             </PendingDiffInfo>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/microservice-iam/src/main/java/com/microservice/iam/infrastructure/persistence/jpa/initialization/DatabaseSeeder.java">
-          <value>
-            <PendingDiffInfo>
-              <option name="filePath" value="$PROJECT_DIR$/microservice-iam/src/main/java/com/microservice/iam/infrastructure/persistence/jpa/initialization/DatabaseSeeder.java" />
-              <option name="updatedContent" value="package com.microservice.iam.infrastructure.persistence.jpa.initialization;&#10;&#10;import com.microservice.iam.domain.model.commands.SeedRolesCommand;&#10;import com.microservice.iam.domain.services.RoleCommandService;&#10;import org.slf4j.Logger;&#10;import org.slf4j.LoggerFactory;&#10;import org.springframework.boot.CommandLineRunner;&#10;import org.springframework.context.annotation.Bean;&#10;import org.springframework.context.annotation.Configuration;&#10;&#10;/**&#10; * DatabaseSeeder for AylluCare/B4U platform.&#10; * &lt;p&gt;&#10; *     Seeds initial data into the database on application startup.&#10; *     Currently seeds the three roles: ROLE_PATIENT, ROLE_DOCTOR, ROLE_ADMIN.&#10; * &lt;/p&gt;&#10; */&#10;@Configuration&#10;public class DatabaseSeeder {&#10;&#10;    private static final Logger log = LoggerFactory.getLogger(DatabaseSeeder.class);&#10;&#10;    /**&#10;     * Seed roles on application startup.&#10;     *&#10;     * @param roleCommandService the role command service&#10;     * @return CommandLineRunner bean&#10;     */&#10;    @Bean&#10;    public CommandLineRunner seedRoles(RoleCommandService roleCommandService) {&#10;        return args -&gt; {&#10;            log.info(&quot;========================================&quot;);&#10;            log.info(&quot;Seeding roles for AylluCare/B4U...&quot;);&#10;            log.info(&quot;========================================&quot;);&#10;            &#10;            try {&#10;                roleCommandService.handle(new SeedRolesCommand());&#10;                log.info(&quot;✓ Roles seeded successfully:&quot;);&#10;                log.info(&quot;  - ROLE_PATIENT&quot;);&#10;                log.info(&quot;  - ROLE_DOCTOR&quot;);&#10;                log.info(&quot;  - ROLE_ADMIN&quot;);&#10;            } catch (Exception e) {&#10;                log.error(&quot;✗ Failed to seed roles: {}&quot;, e.getMessage());&#10;            }&#10;            &#10;            log.info(&quot;========================================&quot;);&#10;        };&#10;    }&#10;}&#10;" />
-            </PendingDiffInfo>
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$/microservice-iam/src/main/java/com/microservice/iam/infrastructure/persistence/jpa/repositories/RefreshTokenRepository.java">
           <value>
             <PendingDiffInfo>
               <option name="filePath" value="$PROJECT_DIR$/microservice-iam/src/main/java/com/microservice/iam/infrastructure/persistence/jpa/repositories/RefreshTokenRepository.java" />
               <option name="updatedContent" value="package com.microservice.iam.infrastructure.persistence.jpa.repositories;&#10;&#10;import com.microservice.iam.domain.model.aggregates.RefreshToken;&#10;import org.springframework.data.jpa.repository.JpaRepository;&#10;import org.springframework.stereotype.Repository;&#10;&#10;import java.time.Instant;&#10;import java.util.Optional;&#10;&#10;/**&#10; * RefreshToken JPA Repository for AylluCare/B4U platform.&#10; * &lt;p&gt;&#10; *     Manages persistence of refresh tokens used in JWT authentication.&#10; * &lt;/p&gt;&#10; */&#10;@Repository&#10;public interface RefreshTokenRepository extends JpaRepository&lt;RefreshToken, Long&gt; {&#10;&#10;    /**&#10;     * Find a refresh token by its token string.&#10;     *&#10;     * @param token the token string&#10;     * @return an optional containing the RefreshToken if found&#10;     */&#10;    Optional&lt;RefreshToken&gt; findByToken(String token);&#10;&#10;    /**&#10;     * Find all refresh tokens for a specific user.&#10;     *&#10;     * @param userId the user ID&#10;     * @return a list of RefreshToken entities&#10;     */&#10;    java.util.List&lt;RefreshToken&gt; findByUserId(Long userId);&#10;&#10;    /**&#10;     * Delete all expired tokens.&#10;     *&#10;     * @param now the current timestamp&#10;     * @return the number of deleted tokens&#10;     */&#10;    int deleteByExpiresAtBefore(Instant now);&#10;&#10;    /**&#10;     * Delete all tokens for a specific user.&#10;     *&#10;     * @param userId the user ID&#10;     */&#10;    void deleteByUserId(Long userId);&#10;&#10;    /**&#10;     * Check if a token exists and is not revoked.&#10;     *&#10;     * @param token the token string&#10;     * @return true if token exists and is not revoked&#10;     */&#10;    boolean existsByTokenAndRevokedFalse(String token);&#10;}&#10;" />
-            </PendingDiffInfo>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/microservice-iam/src/main/java/com/microservice/iam/interfaces/rest/dto/request/RegisterDoctorRequest.java">
-          <value>
-            <PendingDiffInfo>
-              <option name="filePath" value="$PROJECT_DIR$/microservice-iam/src/main/java/com/microservice/iam/interfaces/rest/dto/request/RegisterDoctorRequest.java" />
-              <option name="updatedContent" value="package com.microservice.iam.interfaces.rest.dto.request;&#10;&#10;public record RegisterDoctorRequest(&#10;    String firstName,&#10;    String lastName,&#10;    String email,&#10;    String password,&#10;    String phoneNumber,&#10;    Boolean requiresVerification&#10;) {}&#10;" />
-            </PendingDiffInfo>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/microservice-iam/src/main/java/com/microservice/iam/interfaces/rest/dto/request/RegisterPatientRequest.java">
-          <value>
-            <PendingDiffInfo>
-              <option name="filePath" value="$PROJECT_DIR$/microservice-iam/src/main/java/com/microservice/iam/interfaces/rest/dto/request/RegisterPatientRequest.java" />
-              <option name="updatedContent" value="package com.microservice.iam.interfaces.rest.dto.request;&#10;&#10;public record RegisterPatientRequest(&#10;    String firstName,&#10;    String lastName,&#10;    String email,&#10;    String password,&#10;    String phoneNumber,&#10;    String preferredLanguage&#10;) {}&#10;" />
             </PendingDiffInfo>
           </value>
         </entry>

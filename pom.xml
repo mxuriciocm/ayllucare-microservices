@@ -23,6 +23,7 @@
         <module>microservice-config</module>
         <module>microservice-iam</module>
         <module>microservice-profiles</module>
+        <module>microservice-anamnesis</module>
     </modules>
 
     <properties>
