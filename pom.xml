@@ -24,6 +24,7 @@
         <module>microservice-iam</module>
         <module>microservice-profiles</module>
         <module>microservice-anamnesis</module>
+        <module>microservice-triage</module>
     </modules>
 
     <properties>
