@@ -22,6 +22,7 @@
         <module>microservice-eureka</module>
         <module>microservice-config</module>
         <module>microservice-iam</module>
+        <module>microservice-profiles</module>
     </modules>
 
     <properties>
