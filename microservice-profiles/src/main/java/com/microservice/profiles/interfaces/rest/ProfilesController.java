@@ -1,13 +1,17 @@
 package com.microservice.profiles.interfaces.rest;
 
+import com.microservice.profiles.domain.model.commands.CreateProfileCommand;
 import com.microservice.profiles.domain.model.commands.SignConsentCommand;
+import com.microservice.profiles.domain.model.commands.UpdateProfileCommand;
 import com.microservice.profiles.domain.model.queries.GetAllProfilesQuery;
 import com.microservice.profiles.domain.model.queries.GetProfileByIdQuery;
 import com.microservice.profiles.domain.model.queries.GetProfileByUserIdQuery;
 import com.microservice.profiles.domain.services.ProfileCommandService;
 import com.microservice.profiles.domain.services.ProfileQueryService;
+import com.microservice.profiles.interfaces.rest.resources.CreateProfileResource;
 import com.microservice.profiles.interfaces.rest.resources.ProfileResource;
 import com.microservice.profiles.interfaces.rest.resources.UpdateProfileResource;
+import com.microservice.profiles.interfaces.rest.transform.CreateProfileCommandFromResourceAssembler;
 import com.microservice.profiles.interfaces.rest.transform.ProfileResourceFromEntityAssembler;
 import com.microservice.profiles.interfaces.rest.transform.UpdateProfileCommandFromResourceAssembler;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,6 +36,30 @@ public class ProfilesController {
     public ProfilesController(ProfileQueryService profileQueryService, ProfileCommandService profileCommandService) {
         this.profileQueryService = profileQueryService;
         this.profileCommandService = profileCommandService;
+    }
+
+    /**
+     * Create a new profile manually (for testing or direct creation)
+     * @param resource the resource containing profile data
+     * @return ResponseEntity containing the created ProfileResource
+     */
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Create a new profile", description = "Creates a new patient profile with full medical data")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Profile created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid profile data"),
+            @ApiResponse(responseCode = "409", description = "Profile already exists for this user")})
+    public ResponseEntity<ProfileResource> createProfile(@RequestBody CreateProfileResource resource) {
+        // Use the assembler to convert resource to command
+        var createCommand = CreateProfileCommandFromResourceAssembler.toCommandFromResource(resource);
+
+        var profile = profileCommandService.handle(createCommand);
+        if (profile.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        var profileResource = ProfileResourceFromEntityAssembler.toResourceFromEntity(profile.get());
+        return ResponseEntity.status(HttpStatus.CREATED).body(profileResource);
     }
 
     /**

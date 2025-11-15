@@ -33,9 +33,11 @@ public class Profile extends AuditableAbstractAggregateRoot<Profile> {
     private String address;
     private String emergencyContactName;
     private String emergencyContactPhone;
+    private String emergencyContactRelationship;
 
     // Health information
     private LocalDate dateOfBirth;
+    private String gender; // MALE, FEMALE, OTHER
     private String bloodType; // A+, A-, B+, B-, AB+, AB-, O+, O-
     private Double heightCm;
     private Double weightKg;
@@ -208,12 +210,28 @@ public class Profile extends AuditableAbstractAggregateRoot<Profile> {
         this.emergencyContactPhone = emergencyContactPhone;
     }
 
+    public String getEmergencyContactRelationship() {
+        return emergencyContactRelationship;
+    }
+
+    public void setEmergencyContactRelationship(String emergencyContactRelationship) {
+        this.emergencyContactRelationship = emergencyContactRelationship;
+    }
+
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getBloodType() {

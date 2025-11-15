@@ -46,7 +46,20 @@ public class UserEventConsumer {
                         event.userId(),
                         null,
                         null,
-                        null
+                        null,
+                        null, // dateOfBirth
+                        null, // gender
+                        null, // bloodType
+                        null, // height
+                        null, // weight
+                        null, // allergies
+                        null, // chronicConditions
+                        null, // currentMedications
+                        null, // emergencyContactName
+                        null, // emergencyContactPhone
+                        null, // emergencyContactRelationship
+                        false, // consentForDataSharing
+                        false  // consentForAIProcessing
                 );
                 var profile = profileCommandService.handle(command);
                 if (profile.isPresent()) {
