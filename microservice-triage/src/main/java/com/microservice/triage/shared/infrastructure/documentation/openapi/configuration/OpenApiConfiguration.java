@@ -1,4 +1,4 @@
-package com.microservice.anamnesis.shared.infrastructure.documentation.openapi.configuration;
+package com.microservice.triage.shared.infrastructure.documentation.openapi.configuration;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
@@ -13,10 +13,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenApiConfiguration {
-    @Value("${spring.application.name:Anamnesis Service API}")
+    @Value("${spring.application.name:Triage Service API}")
     String applicationName;
 
-    @Value("${api.description:Anamnesis Service API for AylluCare/B4U Platform}")
+    @Value("${api.description:Triage Service API for AylluCare/B4U Platform}")
     String applicationDescription;
 
     @Value("${api.version:1.0.0}")
@@ -24,7 +24,7 @@ public class OpenApiConfiguration {
 
 
     @Bean
-    public OpenAPI anamnesisServiceOpenApi() {
+    public OpenAPI triageServiceOpenApi() {
         var openApi = new OpenAPI();
         openApi.info(new Info()
                         .title(applicationName)
@@ -32,7 +32,7 @@ public class OpenApiConfiguration {
                         .version(applicationVersion)
                         .license(new License().name("Apache 2.0").url("https://springdoc.org")))
                 .externalDocs(new ExternalDocumentation()
-                        .description("Anamnesis Service API Documentation")
+                        .description("Triage Service API Documentation")
                         .url("https://ayllucare.github.io/docs"));
 
         String securitySchemeName = "bearerAuth";
@@ -48,3 +48,4 @@ public class OpenApiConfiguration {
     }
 
 }
+

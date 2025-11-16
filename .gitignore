@@ -2,6 +2,13 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+.env
+.env.local
+.env.development
+.env.staging
+.env.production
+*.env
+**/.env
 .kotlin
 
 ### IntelliJ IDEA ###

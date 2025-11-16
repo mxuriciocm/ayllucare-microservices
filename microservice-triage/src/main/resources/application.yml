@@ -1,10 +1,9 @@
 spring:
   application:
-    name: microservice-anamnesis
-
+    name: microservice-triage
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/anamnesis_db?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/triage_db?createDatabaseIfNotExist=true
     username: root
     password: Karlam030879@
   jpa:
@@ -16,7 +15,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        physical_naming_strategy: com.microservice.anamnesis.shared.infrastructure.persistence.jpa.configuration.strategy.SnakeCaseWithPluralizedTablePhysicalNamingStrategy
+        physical_naming_strategy: com.microservice.triage.shared.infrastructure.persistence.jpa.configuration.strategy.SnakeCaseWithPluralizedTablePhysicalNamingStrategy
         enable_lazy_load_no_trans: true
 
   data:
@@ -29,32 +28,35 @@ spring:
     username: guest
     password: guest
   cloud:
-    config:
+    compatibility-verifier:
       enabled: false
-      import-check:
-        enabled: false
+
     stream:
       bindings:
-        anamnesisSessionCompleted-out-0:
+        anamnesisSummaryCreated-in-0:
           destination: anamnesis.events
-          group: anamnesis-service
+          group: triage-service
           content-type: application/json
-        anamnesisSummaryCreated-out-0:
-          destination: anamnesis.events
-          group: anamnesis-service
+        triageResultCreated-out-0:
+          destination: triage.events
+          group: triage-service
           content-type: application/json
+
       rabbit:
         bindings:
-          anamnesisSessionCompleted-out-0:
-            producer:
-              routing-key-expression: '''anamnesis.session.completed'''
+          anamnesisSummaryCreated-in-0:
+            consumer:
+              binding-routing-key: anamnesis.summary.created
 
-          anamnesisSummaryCreated-out-0:
+          triageResultCreated-out-0:
             producer:
-              routing-key-expression: '''anamnesis.summary.created'''
+              routing-key-expression: '''triage.result.created'''
+
+    config:
+      import: optional:configserver:http://localhost:8888
 
 server:
-  port: ${SERVER_PORT:8093}
+  port: ${SERVER_PORT:8094}
 authorization:
   jwt:
     secret: ${JWT_SECRET:AylluCare2024SecretKeyForJWTSigningMustBeAtLeast256BitsLongForHS256Algorithm}
@@ -70,16 +72,6 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
     register-with-eureka: true
     fetch-registry: true
-llm:
-  provider: gemini
-gemini:
-  enabled: true
-  api:
-    key: ${GEMINI_API_KEY:AIzaSyCjIVidoDrdxl2dSmgYOkTV78FxyBsU6R4}
-  model: ${GEMINI_MODEL:gemini-2.0-flash}
-  max:
-    tokens: ${GEMINI_MAX_TOKENS:1000}
-  temperature: ${GEMINI_TEMPERATURE:0.7}
 management:
   endpoints:
     web:
@@ -97,11 +89,11 @@ springdoc:
 
 api:
   version: 1.0.0
-  description: Anamnesis Service API for AylluCare/B4U Platform - Manages conversational medical interviews with AI
+  description: Triage Service API for AylluCare/B4U Platform - Medical Priority Assessment
 logging:
   level:
     root: INFO
-    com.microservice.anamnesis: DEBUG
+    com.microservice.triage: DEBUG
     org.springframework.web: INFO
     org.springframework.security: DEBUG
     org.hibernate.SQL: DEBUG
