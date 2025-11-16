@@ -25,6 +25,7 @@
         <module>microservice-profiles</module>
         <module>microservice-anamnesis</module>
         <module>microservice-triage</module>
+        <module>microservice-casedesk</module>
     </modules>
 
     <properties>
