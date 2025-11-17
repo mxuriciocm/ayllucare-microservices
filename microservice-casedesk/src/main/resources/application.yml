@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: microservice-casedesk
+  datasource:
+    url: jdbc:mysql://localhost:3306/casedesk_db
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    stream:
+      bindings:
+        anamnesisSummaryCreated-in-0:
+          destination: anamnesis.events
+          group: casedesk-service
+        triageResultCreated-in-0:
+          destination: triage.events
+          group: casedesk-service
+        caseEvents-out-0:
+          destination: casedesk.events
+server:
+  port: 8095
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+logging:
+  level:
+    com.microservice.casedesk: INFO
+    org.springframework.web: WARN
+    org.hibernate: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+  health:
+    rabbitmq:
+      enabled: true
+    db:
+      enabled: true
