@@ -43,6 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 if (authentication != null) {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                    request.setAttribute("userId", authentication.getUserId());
                     logger.info("✅ Authenticated user with ID: {} and authorities: {}",
                             authentication.getUserId(), authentication.getAuthorities());
                 } else {
@@ -69,4 +70,3 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 }
-

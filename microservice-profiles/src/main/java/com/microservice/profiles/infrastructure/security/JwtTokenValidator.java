@@ -1,4 +1,4 @@
-package com.microservice.casedesk.infrastructure.security;
+package com.microservice.profiles.infrastructure.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -45,10 +45,11 @@ public class JwtTokenValidator {
 
             logger.debug("Extracted userId: {}", userId);
 
+            String email = claims.getSubject();
             List<GrantedAuthority> authorities = extractAuthorities(claims);
             logger.debug("Extracted authorities: {}", authorities);
 
-            JwtAuthenticationToken authToken = new JwtAuthenticationToken(userId, token, authorities);
+            JwtAuthenticationToken authToken = new JwtAuthenticationToken(userId, email, authorities);
             logger.info("JWT token validated successfully for userId: {} with authorities: {}", userId, authorities);
 
             return authToken;

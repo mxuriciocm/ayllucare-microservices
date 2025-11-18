@@ -8,6 +8,7 @@ import com.microservice.profiles.domain.model.queries.GetProfileByIdQuery;
 import com.microservice.profiles.domain.model.queries.GetProfileByUserIdQuery;
 import com.microservice.profiles.domain.services.ProfileCommandService;
 import com.microservice.profiles.domain.services.ProfileQueryService;
+import com.microservice.profiles.infrastructure.security.JwtAuthenticationToken;
 import com.microservice.profiles.interfaces.rest.resources.CreateProfileResource;
 import com.microservice.profiles.interfaces.rest.resources.ProfileResource;
 import com.microservice.profiles.interfaces.rest.resources.UpdateProfileResource;
@@ -21,6 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,11 +40,6 @@ public class ProfilesController {
         this.profileCommandService = profileCommandService;
     }
 
-    /**
-     * Create a new profile manually (for testing or direct creation)
-     * @param resource the resource containing profile data
-     * @return ResponseEntity containing the created ProfileResource
-     */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a new profile", description = "Creates a new patient profile with full medical data")
     @ApiResponses(value = {
@@ -50,8 +47,17 @@ public class ProfilesController {
             @ApiResponse(responseCode = "400", description = "Invalid profile data"),
             @ApiResponse(responseCode = "409", description = "Profile already exists for this user")})
     public ResponseEntity<ProfileResource> createProfile(@RequestBody CreateProfileResource resource) {
-        // Use the assembler to convert resource to command
-        var createCommand = CreateProfileCommandFromResourceAssembler.toCommandFromResource(resource);
+        // Extraer userId del token JWT autenticado
+        JwtAuthenticationToken auth = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null || auth.getUserId() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Long userId = auth.getUserId();
+
+        // Usar el assembler correctamente con el userId extraído del token
+        var createCommand = CreateProfileCommandFromResourceAssembler.toCommandFromResource(resource, userId);
 
         var profile = profileCommandService.handle(createCommand);
         if (profile.isEmpty()) {
@@ -61,7 +67,6 @@ public class ProfilesController {
         var profileResource = ProfileResourceFromEntityAssembler.toResourceFromEntity(profile.get());
         return ResponseEntity.status(HttpStatus.CREATED).body(profileResource);
     }
-
     /**
      * Get a profile by profile ID
      * @param profileId the ID of the profile to retrieve

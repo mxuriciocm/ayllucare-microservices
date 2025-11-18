@@ -1,4 +1,4 @@
-package com.microservice.anamnesis.infrastructure.security;
+package com.microservice.profiles.infrastructure.security;
 
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -11,19 +11,17 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 
     private final Long userId;
     private final String email;
-    private final String token;
 
-    public JwtAuthenticationToken(Long userId, String email, String token, Collection<? extends GrantedAuthority> authorities) {
+    public JwtAuthenticationToken(Long userId, String email, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.userId = userId;
         this.email = email;
-        this.token = token;
         setAuthenticated(true);
     }
 
     @Override
     public Object getCredentials() {
-        return token;
+        return null;
     }
 
     @Override

@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,14 +39,23 @@ public class CasesController {
     private final CaseQueryService caseQueryService;
 
     @GetMapping("/my")
-    @PreAuthorize("hasRole('PATIENT')")
-    @Operation(summary = "Get my cases", description = "Returns all cases for the authenticated patient")
-    public ResponseEntity<List<CaseResource>> getMyCases(@AuthenticationPrincipal JwtAuthenticationToken authentication) {
-        Long patientId = authentication.getUserId();
-        List<Case> cases = caseQueryService.handle(new GetCasesByPatientQuery(patientId));
+    @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR')")
+    @Operation(summary = "Get my cases", description = "Returns cases for the authenticated user")
+    public ResponseEntity<List<CaseResource>> getMyCases() {
+        JwtAuthenticationToken authentication =
+                (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Long userId = authentication.getUserId();
+        List<Case> cases = caseQueryService.handle(new GetCasesByPatientQuery(userId));
+
         List<CaseResource> resources = cases.stream()
                 .map(CaseResourceAssembler::toResourceFromEntity)
                 .collect(Collectors.toList());
+
         return ResponseEntity.ok(resources);
     }
 

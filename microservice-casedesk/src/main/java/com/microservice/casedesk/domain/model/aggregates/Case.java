@@ -19,6 +19,8 @@ public class Case extends AuditableAbstractAggregateRoot<Case> {
     @Column(nullable = false)
     private Long patientId;
 
+    private Long triageId;
+
     @Column(nullable = false)
     private Long anamnesisSessionId;
 
@@ -50,9 +52,10 @@ public class Case extends AuditableAbstractAggregateRoot<Case> {
 
     private LocalDateTime closedAt;
 
-    public Case(Long patientId, Long anamnesisSessionId, TriageLevel triageLevel,
+    public Case(Long patientId, Long triageId, Long anamnesisSessionId, TriageLevel triageLevel,
                 String chiefComplaint, List<String> mainRedFlags, String triageRecommendedAction) {
         this.patientId = patientId;
+        this.triageId = triageId;
         this.anamnesisSessionId = anamnesisSessionId;
         this.triageLevel = triageLevel;
         this.chiefComplaint = chiefComplaint;
@@ -114,4 +117,26 @@ public class Case extends AuditableAbstractAggregateRoot<Case> {
             this.notes.add(note);
         }
     }
+
+    // Setters para CreateCaseCommand
+    public void setPatientId(Long patientId) {
+        this.patientId = patientId;
+    }
+
+    public void setTriageId(Long triageId) {
+        this.triageId = triageId;
+    }
+
+    public void setAnamnesisSessionId(Long anamnesisSessionId) {
+        this.anamnesisSessionId = anamnesisSessionId;
+    }
+
+    public void setTriageLevel(TriageLevel triageLevel) {
+        this.triageLevel = triageLevel;
+    }
+
+    public void setStatus(CaseStatus status) {
+        this.status = status;
+    }
+
 }

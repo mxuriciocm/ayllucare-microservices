@@ -1,4 +1,4 @@
-package com.microservice.casedesk.infrastructure.security;
+package com.microservice.profiles.infrastructure.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

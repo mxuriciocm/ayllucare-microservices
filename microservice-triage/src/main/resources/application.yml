@@ -22,16 +22,20 @@ spring:
     jpa:
       repositories:
         bootstrap-mode: default
+
   rabbitmq:
     host: localhost
     port: 5672
     username: guest
     password: guest
+
   cloud:
     compatibility-verifier:
       enabled: false
 
     stream:
+      function:
+        definition: anamnesisSummaryCreated;triageResultCreated
       bindings:
         anamnesisSummaryCreated-in-0:
           destination: anamnesis.events
@@ -47,22 +51,29 @@ spring:
           anamnesisSummaryCreated-in-0:
             consumer:
               binding-routing-key: anamnesis.summary.created
+              exchange-type: topic
 
           triageResultCreated-out-0:
             producer:
               routing-key-expression: '''triage.result.created'''
+              exchange-type: topic
 
     config:
-      import: optional:configserver:http://localhost:8888
+      enabled: false
+      import-check:
+        enabled: false
 
 server:
   port: ${SERVER_PORT:8094}
+
 authorization:
   jwt:
     secret: ${JWT_SECRET:AylluCare2024SecretKeyForJWTSigningMustBeAtLeast256BitsLongForHS256Algorithm}
+
 services:
   profile:
     url: ${PROFILE_SERVICE_URL:http://microservice-profiles}
+
 eureka:
   instance:
     hostname: localhost
@@ -72,6 +83,7 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
     register-with-eureka: true
     fetch-registry: true
+
 management:
   endpoints:
     web:
@@ -80,6 +92,7 @@ management:
   endpoint:
     health:
       show-details: when-authorized
+
 springdoc:
   swagger-ui:
     enabled: true
@@ -90,6 +103,7 @@ springdoc:
 api:
   version: 1.0.0
   description: Triage Service API for AylluCare/B4U Platform - Medical Priority Assessment
+
 logging:
   level:
     root: INFO
@@ -97,4 +111,3 @@ logging:
     org.springframework.web: INFO
     org.springframework.security: DEBUG
     org.hibernate.SQL: DEBUG
-

@@ -27,6 +27,7 @@ public class TriageResultCreatedEvent {
     private List<String> riskFactors;
     private List<String> redFlags;
     private String recommendations;
+    private String chiefComplaint;
 
     public TriageResultCreatedEvent(Long triageId, Long userId, Long sessionId,
                                    PriorityLevel priority, List<String> riskFactors,
@@ -41,6 +42,23 @@ public class TriageResultCreatedEvent {
         this.riskFactors = riskFactors;
         this.redFlags = redFlags;
         this.recommendations = recommendations;
+        this.chiefComplaint = null; // Se puede agregar como parámetro si es necesario
+    }
+
+    public TriageResultCreatedEvent(Long triageId, Long userId, Long sessionId,
+                                   PriorityLevel priority, List<String> riskFactors,
+                                   List<String> redFlags, String recommendations, String chiefComplaint) {
+        this.eventId = UUID.randomUUID().toString();
+        this.eventType = "TRIAGE_RESULT_CREATED";
+        this.occurredAt = Instant.now();
+        this.triageId = triageId;
+        this.userId = userId;
+        this.sessionId = sessionId;
+        this.priority = priority;
+        this.riskFactors = riskFactors;
+        this.redFlags = redFlags;
+        this.recommendations = recommendations;
+        this.chiefComplaint = chiefComplaint;
     }
 }
 

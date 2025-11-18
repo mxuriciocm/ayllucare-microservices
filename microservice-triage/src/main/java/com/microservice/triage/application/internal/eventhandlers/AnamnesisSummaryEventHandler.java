@@ -3,23 +3,23 @@ package com.microservice.triage.application.internal.eventhandlers;
 import com.microservice.triage.application.clients.ProfileClient;
 import com.microservice.triage.application.dto.ProfileSnapshotDTO;
 import com.microservice.triage.application.events.AnamnesisSummaryCreatedEvent;
+import com.microservice.triage.application.events.TriageResultCreatedEvent;
 import com.microservice.triage.domain.model.commands.CreateTriageResultCommand;
 import com.microservice.triage.domain.model.valueobjects.PriorityLevel;
 import com.microservice.triage.domain.services.TriageCommandService;
 import com.microservice.triage.domain.services.TriageDomainService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-/**
- * Event handler for consuming AnamnesisSummaryCreatedEvent from RabbitMQ.
- * Processes anamnesis summaries and creates triage results.
- */
 @Configuration
 public class AnamnesisSummaryEventHandler {
 
@@ -28,92 +28,90 @@ public class AnamnesisSummaryEventHandler {
     private final TriageCommandService triageCommandService;
     private final TriageDomainService triageDomainService;
     private final ProfileClient profileClient;
+    private final StreamBridge streamBridge;
 
     public AnamnesisSummaryEventHandler(TriageCommandService triageCommandService,
-                                       TriageDomainService triageDomainService,
-                                       ProfileClient profileClient) {
+                                        TriageDomainService triageDomainService,
+                                        ProfileClient profileClient,
+                                        StreamBridge streamBridge) {
         this.triageCommandService = triageCommandService;
         this.triageDomainService = triageDomainService;
         this.profileClient = profileClient;
+        this.streamBridge = streamBridge;
     }
 
-    /**
-     * Spring Cloud Stream consumer for AnamnesisSummaryCreatedEvent.
-     * Function name must match the binding configuration in application.properties.
-     */
     @Bean
     public Consumer<AnamnesisSummaryCreatedEvent> anamnesisSummaryCreated() {
         return event -> {
             try {
                 logger.info("📩 Received AnamnesisSummaryCreatedEvent for userId: {}, sessionId: {}",
-                           event.getUserId(), event.getSessionId());
+                        event.getUserId(), event.getSessionId());
 
                 processAnamnesisSummary(event);
 
             } catch (Exception e) {
                 logger.error("❌ Error processing AnamnesisSummaryCreatedEvent for sessionId: {}",
-                            event.getSessionId(), e);
-                // In production, consider implementing retry logic or dead letter queue
+                        event.getSessionId(), e);
             }
         };
     }
 
     private void processAnamnesisSummary(AnamnesisSummaryCreatedEvent event) {
-        // 1. Get patient profile from Profile microservice
-        logger.debug("Fetching profile for userId: {}", event.getUserId());
         Optional<ProfileSnapshotDTO> profileOpt = profileClient.getProfileByUserId(event.getUserId());
-
         ProfileSnapshotDTO profile = profileOpt.orElse(null);
-        if (profile == null) {
-            logger.warn("⚠️ Profile not found for userId: {}, continuing with limited data", event.getUserId());
-        } else {
-            logger.debug("✅ Profile retrieved successfully for userId: {}", event.getUserId());
-        }
 
-        // 2. Calculate priority using domain service
-        logger.debug("Calculating priority level...");
         PriorityLevel priority = triageDomainService.calculatePriority(event.getSummary(), profile);
-        logger.info("🎯 Priority calculated: {} for sessionId: {}", priority, event.getSessionId());
-
-        // 3. Identify risk factors
         List<String> riskFactors = triageDomainService.identifyRiskFactors(event.getSummary(), profile);
-        logger.debug("Identified {} risk factors", riskFactors.size());
-
-        // 4. Get red flags from anamnesis summary
         List<String> redFlags = event.getSummary().getRedFlags();
-        if (redFlags != null && !redFlags.isEmpty()) {
-            logger.info("⚠️ {} red flags detected", redFlags.size());
-        }
+        String recommendations = triageDomainService.generateRecommendations(priority, event.getSummary(), profile);
 
-        // 5. Generate recommendations
-        String recommendations = triageDomainService.generateRecommendations(
-            priority, event.getSummary(), profile
-        );
-
-        // 6. Create triage result command
         CreateTriageResultCommand command = new CreateTriageResultCommand(
-            event.getUserId(),
-            event.getSessionId(),
-            priority,
-            riskFactors,
-            redFlags,
-            recommendations
+                event.getUserId(),
+                event.getSessionId(),
+                priority,
+                riskFactors,
+                redFlags,
+                recommendations
         );
 
-        // 7. Execute command to create triage result
         var result = triageCommandService.handle(command);
 
         if (result.isPresent()) {
-            logger.info("✅ Triage result created successfully with ID: {} and priority: {}",
-                       result.get().getId(), result.get().getPriority());
+            var triageResult = result.get();
 
-            if (result.get().isEmergency()) {
-                logger.warn("🚨 EMERGENCY CASE DETECTED! Triage ID: {}, User ID: {}",
-                           result.get().getId(), result.get().getUserId());
+            logger.info("✅ Triage result created successfully with ID: {} and priority: {}",
+                    triageResult.getId(), triageResult.getPriority());
+
+            // 🚀 PUBLICAR EL EVENTO
+            TriageResultCreatedEvent triageEvent = new TriageResultCreatedEvent(
+                    triageResult.getId(),
+                    triageResult.getUserId(),
+                    triageResult.getSessionId(),
+                    triageResult.getPriority(),
+                    riskFactors,
+                    redFlags,
+                    recommendations,
+                    event.getSummary() != null ? event.getSummary().getChiefComplaint() : null
+            );
+
+            Message<TriageResultCreatedEvent> message = MessageBuilder
+                    .withPayload(triageEvent)
+                    .setHeader("routingKey", "triage.result.created")
+                    .build();
+
+            boolean sent = streamBridge.send("triageResultCreated-out-0", message);
+
+            if (sent) {
+                logger.info("🚀 Published TriageResultCreatedEvent for userId: {} with priority: {}",
+                        triageResult.getUserId(), triageResult.getPriority());
+            } else {
+                logger.error("❌ Failed to publish TriageResultCreatedEvent");
             }
-        } else {
-            logger.error("❌ Failed to create triage result for sessionId: {}", event.getSessionId());
+
+            if (triageResult.isEmergency()) {
+                logger.warn("🚨 EMERGENCY CASE DETECTED! Triage ID: {}, User ID: {}",
+                        triageResult.getId(), triageResult.getUserId());
+            }
         }
     }
 }
-

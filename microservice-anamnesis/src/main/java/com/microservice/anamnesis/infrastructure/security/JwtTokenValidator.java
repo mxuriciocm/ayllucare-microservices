@@ -15,9 +15,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * JWT token validator for validating tokens issued by IAM microservice.
- */
 @Component
 public class JwtTokenValidator {
 
@@ -39,7 +36,6 @@ public class JwtTokenValidator {
 
             logger.debug("JWT token parsed successfully. Claims: {}", claims);
 
-            // Extract userId from 'id' claim (not from subject which contains email)
             Long userId = claims.get("id", Long.class);
 
             if (userId == null) {
@@ -49,10 +45,11 @@ public class JwtTokenValidator {
 
             logger.debug("Extracted userId: {}", userId);
 
+            String email = claims.getSubject();
             List<GrantedAuthority> authorities = extractAuthorities(claims);
             logger.debug("Extracted authorities: {}", authorities);
 
-            JwtAuthenticationToken authToken = new JwtAuthenticationToken(userId, token, authorities);
+            JwtAuthenticationToken authToken = new JwtAuthenticationToken(userId, email, token, authorities);
             logger.info("JWT token validated successfully for userId: {} with authorities: {}", userId, authorities);
 
             return authToken;
@@ -73,11 +70,9 @@ public class JwtTokenValidator {
             if (rolesObj instanceof List) {
                 List<String> roles = (List<String>) rolesObj;
                 for (String role : roles) {
-                    // Roles already come with ROLE_ prefix from IAM
                     authorities.add(new SimpleGrantedAuthority(role));
                 }
             } else if (rolesObj instanceof String) {
-                // Roles already come with ROLE_ prefix from IAM
                 authorities.add(new SimpleGrantedAuthority((String) rolesObj));
             }
 
@@ -88,4 +83,3 @@ public class JwtTokenValidator {
         return authorities;
     }
 }
-

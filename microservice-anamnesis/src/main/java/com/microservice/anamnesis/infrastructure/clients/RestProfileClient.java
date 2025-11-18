@@ -5,6 +5,8 @@ import com.microservice.anamnesis.application.dto.ProfileSnapshot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -32,9 +34,12 @@ public class RestProfileClient implements ProfileClient {
     public Optional<ProfileSnapshot> getProfileByUserId(Long userId) {
         logger.debug("Fetching profile for userId: {}", userId);
 
+        String token = extractTokenFromSecurityContext();
+
         try {
             ProfileSnapshot profile = webClient.get()
                     .uri(profileServiceUrl + "/api/v1/profiles/user/{userId}", userId)
+                    .header("Authorization", "Bearer " + token)
                     .retrieve()
                     .bodyToMono(ProfileSnapshot.class)
                     .block();
@@ -64,17 +69,24 @@ public class RestProfileClient implements ProfileClient {
                 logger.debug("User {} AI consent: {}", userId, hasConsent);
                 return hasConsent;
             } else {
-                // If profile doesn't exist yet (user just registered, event still being processed),
-                // assume consent by default. In production, you may want to wait or handle differently.
                 logger.info("Profile not found for userId: {}, assuming consent by default (profile may be being created)", userId);
-                return true; // Changed from false to true
+                return true;
             }
 
         } catch (Exception e) {
             logger.error("Error checking consent for userId: {}", userId, e);
-            // In case of error, allow the process to continue
             return true;
         }
     }
-}
 
+    private String extractTokenFromSecurityContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getCredentials() != null) {
+            return authentication.getCredentials().toString();
+        }
+
+        logger.warn("No authentication token found in SecurityContext");
+        return "";
+    }
+}
