@@ -29,52 +29,6 @@ public class CaseEventsConsumer {
         log.info("🚀 CaseEventsConsumer initialized");
     }
 
-    @Bean
-    public Consumer<String> anamnesisSummaryCreated() {
-        log.info("🔧 Registering anamnesisSummaryCreated consumer");
-        return message -> {
-            log.info("📥 ANAMNESIS MESSAGE: {}", message);
-        };
-    }
-
-    @Bean
-    public Consumer<String> triageResultCreated() {
-        log.info("🔧 Registering triageResultCreated consumer");
-        return message -> {
-            try {
-                log.info("📥 RAW TRIAGE MESSAGE: {}", message);
-                TriageResultCreatedEvent event = objectMapper.readValue(message, TriageResultCreatedEvent.class);
-                log.info("📋 EVENT PARSED - UserID: {}, TriageLevel: {}", event.getUserId(), event.getTriageLevel());
-
-                TriageLevel triageLevel = TriageLevel.valueOf(event.getTriageLevel().toUpperCase());
-                Long triageId = event.getTriageId() != null ? event.getTriageId() : (long) Math.abs(event.getEventId().hashCode());
-
-                Case newCase = new Case(
-                        event.getUserId(),
-                        triageId,
-                        event.getAnamnesisSessionId(),
-                        triageLevel,
-                        event.getChiefComplaint(),
-                        event.getRedFlags(),
-                        event.getRecommendedAction()
-                );
-
-                Case savedCase = caseRepository.save(newCase);
-                log.info("✅ CASE CREATED: ID={}, UserID={}", savedCase.getId(), event.getUserId());
-
-                CaseCreatedEvent caseEvent = CaseCreatedEvent.create(
-                        savedCase.getId(),
-                        savedCase.getPatientId(),
-                        savedCase.getAnamnesisSessionId(),
-                        savedCase.getTriageLevel(),
-                        savedCase.getChiefComplaint()
-                );
-                caseEventPublisher.publish(caseEvent);
-                log.info("📤 CASE EVENT PUBLISHED: {}", savedCase.getId());
-
-            } catch (Exception e) {
-                log.error("❌ ERROR: {}", e.getMessage(), e);
-            }
-        };
-    }
+    // Beans Consumer eliminados - Ahora usamos @RabbitListener en TriageEventListener.java
+    // Esto evita conflictos entre Spring Cloud Stream y Spring AMQP
 }

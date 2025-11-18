@@ -1,9 +1,8 @@
 package com.microservice.casedesk.domain.model.valueobjects;
 
 public enum TriageLevel {
-    EMERGENT,
-    URGENT,
+    EMERGENCY,
     HIGH,
-    MEDIUM,
+    MODERATE,
     LOW
 }

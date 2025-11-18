@@ -40,40 +40,9 @@ spring:
       import-check:
         enabled: false
 
+    # Spring Cloud Stream deshabilitado - Usando @RabbitListener directo
     stream:
-      function:
-        definition: anamnesisSummaryCreated;triageResultCreated
-      bindings:
-        anamnesisSummaryCreated-in-0:
-          destination: anamnesis.events
-          group: casedesk-service
-          content-type: application/json
-
-        triageResultCreated-in-0:
-          destination: triage.events
-          group: casedesk-service
-          content-type: application/json
-
-        caseEvents-out-0:
-          destination: casedesk.events
-          content-type: application/json
-
-      rabbit:
-        bindings:
-          anamnesisSummaryCreated-in-0:
-            consumer:
-              binding-routing-key: anamnesis.summary.created
-              exchange-type: topic
-
-          triageResultCreated-in-0:
-            consumer:
-              binding-routing-key: triage.result.created
-              exchange-type: topic
-
-          caseEvents-out-0:
-            producer:
-              routing-key-expression: '''casedesk.case.created'''
-              exchange-type: topic
+      default-binder: rabbit
 
 server:
   port: ${SERVER_PORT:8095}
