@@ -1,0 +1,1018 @@
+{
+  "version": "1.0",
+  "lastUpdate": "2025-12-02",
+  "description": "Dataset médico de AylluCare para zonas rurales de Perú",
+  "knowledgeBase": [
+    {
+      "topic": "Resfriado Común",
+      "description": "Infección viral del tracto respiratorio superior. Muy común y generalmente autolimitada.",
+      "symptoms": [
+        "congestión nasal",
+        "rinorrea",
+        "estornudos",
+        "dolor de garganta leve",
+        "tos",
+        "malestar general",
+        "fiebre baja (menos de 38°C)"
+      ],
+      "recommendations": [
+        "Descanso adecuado",
+        "Hidratación abundante",
+        "Paracetamol o ibuprofeno para malestar",
+        "Descongestionantes nasales si es necesario",
+        "Duración típica: 7-10 días"
+      ],
+      "redFlags": [
+        "Fiebre alta persistente (>39°C)",
+        "Dificultad respiratoria severa",
+        "Dolor de pecho intenso",
+        "Confusión o alteración del estado mental",
+        "Síntomas que empeoran después de 7 días"
+      ]
+    },
+    {
+      "topic": "Migraña",
+      "description": "Cefalea primaria caracterizada por dolor pulsátil unilateral, frecuentemente incapacitante.",
+      "symptoms": [
+        "dolor de cabeza intenso",
+        "dolor pulsátil",
+        "dolor unilateral",
+        "náuseas",
+        "vómitos",
+        "fotofobia",
+        "fonofobia",
+        "aura visual"
+      ],
+      "recommendations": [
+        "Ambiente oscuro y silencioso",
+        "Analgésicos (paracetamol, ibuprofeno)",
+        "Triptanes en casos severos (bajo prescripción)",
+        "Identificar y evitar desencadenantes",
+        "Considerar tratamiento preventivo si episodios frecuentes"
+      ],
+      "redFlags": [
+        "Cefalea súbita e intensa (cefalea en trueno)",
+        "Fiebre y rigidez de nuca",
+        "Alteración de la conciencia",
+        "Déficit neurológico focal nuevo",
+        "Primera crisis en persona mayor de 50 años"
+      ]
+    },
+    {
+      "topic": "Gastroenteritis Aguda",
+      "description": "Inflamación del tracto gastrointestinal, generalmente de origen viral o bacteriano.",
+      "symptoms": [
+        "diarrea",
+        "náuseas",
+        "vómitos",
+        "dolor abdominal",
+        "calambres abdominales",
+        "fiebre leve",
+        "malestar general"
+      ],
+      "recommendations": [
+        "Hidratación oral frecuente (sales de rehidratación)",
+        "Dieta blanda progresiva",
+        "Evitar lácteos temporalmente",
+        "Probióticos pueden ayudar",
+        "Zinc en niños",
+        "Duración típica: 2-5 días"
+      ],
+      "redFlags": [
+        "Signos de deshidratación severa",
+        "Sangre en heces abundante",
+        "Fiebre alta persistente (>39°C)",
+        "Dolor abdominal intenso localizado",
+        "Vómitos persistentes que impiden hidratación",
+        "Síntomas en lactantes o ancianos"
+      ]
+    },
+    {
+      "topic": "Dengue",
+      "description": "Enfermedad viral transmitida por mosquito Aedes aegypti. Endémica en zonas tropicales del Perú.",
+      "symptoms": [
+        "fiebre alta súbita",
+        "dolor de cabeza intenso",
+        "dolor retroocular",
+        "dolor muscular y articular severo",
+        "erupción cutánea",
+        "náuseas y vómitos",
+        "sangrado leve (encías, nariz)"
+      ],
+      "recommendations": [
+        "Reposo absoluto",
+        "Hidratación oral abundante",
+        "Paracetamol para fiebre (NO aspirina o ibuprofeno)",
+        "Monitoreo de signos de alarma",
+        "Conteo de plaquetas regular",
+        "Prevención: eliminar criaderos de mosquitos"
+      ],
+      "redFlags": [
+        "Dolor abdominal intenso y sostenido",
+        "Vómitos persistentes",
+        "Sangrado de mucosas",
+        "Letargia o irritabilidad",
+        "Hepatomegalia dolorosa",
+        "Caída súbita de temperatura con sudoración",
+        "Plaquetas <100,000"
+      ]
+    },
+    {
+      "topic": "Mal de Altura Agudo (Soroche)",
+      "description": "Síndrome causado por la baja presión de oxígeno en altitudes superiores a 2500 msnm. Común en los Andes.",
+      "symptoms": [
+        "dolor de cabeza",
+        "náuseas",
+        "mareos",
+        "fatiga",
+        "dificultad para dormir",
+        "pérdida de apetito",
+        "dificultad respiratoria leve"
+      ],
+      "recommendations": [
+        "Ascenso gradual (aclimatar)",
+        "Hidratación abundante",
+        "Evitar alcohol y sedantes",
+        "Reposo en las primeras 24 horas",
+        "Acetazolamida para prevención",
+        "Mate de coca (tradicional)",
+        "Descenso si no mejora"
+      ],
+      "redFlags": [
+        "Confusión o ataxia (edema cerebral)",
+        "Tos con espuma rosada (edema pulmonar)",
+        "Dificultad respiratoria en reposo",
+        "Cianosis",
+        "Alteración de conciencia",
+        "Imposibilidad de caminar en línea recta"
+      ]
+    },
+    {
+      "topic": "Tuberculosis Pulmonar",
+      "description": "Infección bacteriana crónica causada por Mycobacterium tuberculosis. Prevalente en zonas con hacinamiento.",
+      "symptoms": [
+        "tos persistente por más de 2 semanas",
+        "tos con sangre (hemoptisis)",
+        "fiebre vespertina",
+        "sudoración nocturna profusa",
+        "pérdida de peso progresiva",
+        "pérdida de apetito",
+        "fatiga extrema"
+      ],
+      "recommendations": [
+        "Tratamiento con múltiples antibióticos (rifampicina, isoniazida, etc.)",
+        "Duración mínima: 6 meses",
+        "Supervisión directa del tratamiento (DOTS)",
+        "Aislamiento respiratorio inicial",
+        "Evaluación de contactos",
+        "Notificación obligatoria a salud pública"
+      ],
+      "redFlags": [
+        "Hemoptisis masiva",
+        "Dificultad respiratoria severa",
+        "Tuberculosis multirresistente",
+        "TB extrapulmonar (meníngea, ósea)",
+        "Coinfección con VIH",
+        "Abandono del tratamiento"
+      ]
+    },
+    {
+      "topic": "Diabetes Mellitus Tipo 2",
+      "description": "Trastorno metabólico caracterizado por hiperglucemia crónica debido a resistencia a la insulina.",
+      "symptoms": [
+        "poliuria (orinar frecuentemente)",
+        "polidipsia (sed excesiva)",
+        "polifagia (hambre excesiva)",
+        "pérdida de peso inexplicable",
+        "fatiga",
+        "visión borrosa",
+        "heridas que cicatrizan lentamente"
+      ],
+      "recommendations": [
+        "Dieta saludable y balanceada",
+        "Control de carbohidratos",
+        "Ejercicio regular (150 min/semana)",
+        "Pérdida de peso si es necesario",
+        "Medicamentos orales (metformina, etc.)",
+        "Insulina si es necesario",
+        "Monitoreo regular de glucosa"
+      ],
+      "redFlags": [
+        "Glucosa >400 mg/dL",
+        "Confusión o alteración del estado mental",
+        "Dificultad respiratoria",
+        "Náuseas y vómitos persistentes",
+        "Dolor abdominal severo",
+        "Signos de cetoacidosis"
+      ]
+    },
+    {
+      "topic": "Hipertensión Arterial",
+      "description": "Presión arterial persistentemente elevada. Factor de riesgo cardiovascular mayor.",
+      "symptoms": [
+        "generalmente asintomática",
+        "cefalea ocasional",
+        "mareos",
+        "visión borrosa",
+        "presión arterial >140/90 mmHg"
+      ],
+      "recommendations": [
+        "Modificaciones del estilo de vida (dieta baja en sal, ejercicio)",
+        "Control de peso",
+        "Reducción de alcohol",
+        "Medicamentos antihipertensivos según indicación médica",
+        "Monitoreo regular de presión arterial"
+      ],
+      "redFlags": [
+        "Presión arterial >180/120 mmHg",
+        "Dolor torácico",
+        "Dificultad respiratoria severa",
+        "Cefalea intensa súbita",
+        "Alteración visual súbita",
+        "Confusión o alteración del estado mental"
+      ]
+    },
+    {
+      "topic": "Neumonía",
+      "description": "Infección del tejido pulmonar que causa inflamación de los alvéolos. Puede ser bacteriana o viral.",
+      "symptoms": [
+        "fiebre alta",
+        "tos con flema",
+        "dolor torácico al respirar",
+        "dificultad respiratoria",
+        "escalofríos",
+        "fatiga severa",
+        "sudoración nocturna"
+      ],
+      "recommendations": [
+        "Antibióticos si es bacteriana",
+        "Reposo absoluto",
+        "Hidratación abundante",
+        "Analgésicos y antipiréticos",
+        "Oxígeno suplementario si es necesario",
+        "Hospitalización en casos graves"
+      ],
+      "redFlags": [
+        "Frecuencia respiratoria >30/min",
+        "Saturación de oxígeno <92%",
+        "Confusión o desorientación",
+        "Presión arterial baja",
+        "Taquicardia >120 lpm",
+        "Pacientes mayores de 65 años o con comorbilidades"
+      ]
+    },
+    {
+      "topic": "Apendicitis Aguda",
+      "description": "Inflamación del apéndice que requiere cirugía urgente. Emergencia quirúrgica común.",
+      "symptoms": [
+        "dolor abdominal que inicia periumbilical",
+        "dolor migra a fosa ilíaca derecha",
+        "náuseas y vómitos",
+        "pérdida de apetito",
+        "fiebre baja",
+        "dolor al caminar o toser",
+        "signo de Blumberg positivo"
+      ],
+      "recommendations": [
+        "EMERGENCIA QUIRÚRGICA",
+        "Evaluación quirúrgica urgente",
+        "Ayuno absoluto",
+        "NO administrar analgésicos antes de valoración",
+        "Apendicectomía laparoscópica o abierta",
+        "Antibióticos perioperatorios"
+      ],
+      "redFlags": [
+        "Cualquier sospecha de apendicitis es urgente",
+        "Dolor abdominal intenso en FID",
+        "Fiebre alta (peritonitis)",
+        "Rigidez abdominal",
+        "Taquicardia",
+        "Empeoramiento rápido de síntomas"
+      ]
+    },
+    {
+      "topic": "Malaria (Paludismo)",
+      "description": "Enfermedad parasitaria transmitida por mosquito Anopheles. Presente en la selva peruana.",
+      "symptoms": [
+        "fiebre en picos cíclicos cada 48-72 horas",
+        "escalofríos intensos",
+        "sudoración profusa",
+        "dolor de cabeza severo",
+        "náuseas y vómitos",
+        "dolor muscular",
+        "fatiga extrema",
+        "ictericia en casos graves"
+      ],
+      "recommendations": [
+        "Diagnóstico mediante gota gruesa o test rápido",
+        "Antimaláricos según especie (cloroquina, artemisina)",
+        "Hospitalización en casos complicados",
+        "Hidratación adecuada",
+        "Prevención: mosquiteros tratados con insecticida",
+        "Quimioprofilaxis en zonas endémicas",
+        "Notificación obligatoria"
+      ],
+      "redFlags": [
+        "Convulsiones",
+        "Alteración del estado de conciencia",
+        "Ictericia severa",
+        "Anemia grave",
+        "Insuficiencia renal",
+        "Dificultad respiratoria",
+        "Malaria cerebral",
+        "Shock"
+      ]
+    },
+    {
+      "topic": "Leishmaniasis",
+      "description": "Enfermedad parasitaria transmitida por mosquito Lutzomyia. Común en zonas tropicales y subtropicales del Perú.",
+      "symptoms": [
+        "úlcera cutánea indolora",
+        "lesión que no cicatriza",
+        "bordes elevados",
+        "fondo granuloso",
+        "puede aparecer después de semanas o meses",
+        "adenopatías regionales",
+        "forma mucosa: lesiones en nariz o boca"
+      ],
+      "recommendations": [
+        "Diagnóstico mediante frotis o biopsia",
+        "Tratamiento con antimoniales pentavalentes",
+        "Duración: 20-28 días según forma",
+        "Seguimiento médico estrecho",
+        "Prevención: mosquiteros, repelentes",
+        "Evitar exposición en zonas endémicas"
+      ],
+      "redFlags": [
+        "Leishmaniasis mucosa (destrucción de tabique nasal)",
+        "Leishmaniasis visceral (fiebre prolongada, hepatoesplenomegalia)",
+        "Lesiones múltiples",
+        "No respuesta a tratamiento",
+        "Inmunodepresión",
+        "Lesiones en cara"
+      ]
+    },
+    {
+      "topic": "Enfermedad de Chagas",
+      "description": "Infección parasitaria causada por Trypanosoma cruzi, transmitida por la vinchuca. Endémica en zonas rurales.",
+      "symptoms": [
+        "fase aguda: fiebre prolongada",
+        "hinchazón en sitio de picadura (chagoma)",
+        "hinchazón del párpado (signo de Romaña)",
+        "fase crónica: generalmente asintomática",
+        "cardiopatía chagásica: palpitaciones, disnea",
+        "megacolon o megaesófago en casos crónicos"
+      ],
+      "recommendations": [
+        "Diagnóstico mediante serología",
+        "Tratamiento antiparasitario en fase aguda (benznidazol)",
+        "Seguimiento cardiológico en fase crónica",
+        "Mejora de vivienda (paredes lisas)",
+        "Control vectorial",
+        "Tamizaje en bancos de sangre",
+        "Tratamiento de complicaciones cardíacas"
+      ],
+      "redFlags": [
+        "Insuficiencia cardíaca",
+        "Arritmias severas",
+        "Muerte súbita",
+        "Megaesófago con disfagia severa",
+        "Megacolon con obstrucción",
+        "Miocarditis aguda"
+      ]
+    },
+    {
+      "topic": "Anemia Ferropénica",
+      "description": "Deficiencia de hierro que causa reducción de hemoglobina. Muy común en niños, mujeres y gestantes en zonas rurales.",
+      "symptoms": [
+        "palidez de piel y mucosas",
+        "palidez de conjuntivas",
+        "fatiga y debilidad",
+        "mareos al levantarse",
+        "palpitaciones",
+        "dificultad para concentrarse",
+        "uñas quebradizas",
+        "caída de cabello",
+        "glositis (lengua lisa)"
+      ],
+      "recommendations": [
+        "Suplementación con sulfato ferroso oral",
+        "Tomar con vitamina C (jugo de naranja)",
+        "Consumir alimentos ricos en hierro (hígado, sangrecita, lentejas)",
+        "Desparasitación",
+        "Control de hemoglobina mensual",
+        "Identificar y tratar causa de pérdida",
+        "En gestantes: suplementación preventiva"
+      ],
+      "redFlags": [
+        "Hemoglobina <7 g/dL",
+        "Taquicardia en reposo >120 lpm",
+        "Disnea severa",
+        "Angina de pecho",
+        "Gestantes con anemia severa",
+        "Sangrado activo",
+        "Insuficiencia cardíaca"
+      ]
+    },
+    {
+      "topic": "Desnutrición Infantil",
+      "description": "Déficit de nutrientes esenciales en niños menores de 5 años. Problema grave en zonas rurales del Perú.",
+      "symptoms": [
+        "bajo peso para la edad",
+        "talla baja para la edad (desnutrición crónica)",
+        "emaciación (bajo peso para talla)",
+        "irritabilidad o apatía",
+        "retraso en desarrollo psicomotor",
+        "cabello quebradizo y despigmentado",
+        "piel seca",
+        "edema en pies (kwashiorkor)",
+        "infecciones frecuentes"
+      ],
+      "recommendations": [
+        "Evaluación nutricional completa (peso, talla, perímetro braquial)",
+        "Suplementación con micronutrientes (multimicronutrientes)",
+        "Alimentación complementaria adecuada desde 6 meses",
+        "Lactancia materna exclusiva hasta 6 meses",
+        "Lactancia materna continuada hasta 2 años",
+        "Desparasitación semestral",
+        "Control de crecimiento y desarrollo mensual",
+        "Educación nutricional a padres"
+      ],
+      "redFlags": [
+        "Desnutrición aguda severa (emaciación visible)",
+        "Edema bilateral en pies",
+        "Hipoglucemia",
+        "Hipotermia (<35.5°C)",
+        "Letargia o inconsciencia",
+        "Deshidratación severa",
+        "Infección grave concomitante",
+        "Perímetro braquial <115mm en niños 6-59 meses"
+      ]
+    },
+    {
+      "topic": "Infección Respiratoria Aguda (IRA)",
+      "description": "Infección de vías respiratorias superiores o inferiores. Causa principal de consulta en zonas rurales.",
+      "symptoms": [
+        "tos",
+        "rinorrea",
+        "obstrucción nasal",
+        "dolor de garganta",
+        "fiebre",
+        "dificultad respiratoria (IRA baja)",
+        "respiración rápida",
+        "tiraje subcostal o intercostal"
+      ],
+      "recommendations": [
+        "Clasificar según gravedad (OMS/AIEPI)",
+        "Hidratación adecuada",
+        "Continuar lactancia materna",
+        "Alimentación frecuente",
+        "Paracetamol para fiebre >38.5°C",
+        "Antibióticos SOLO si neumonía bacteriana",
+        "Lavado nasal con suero fisiológico",
+        "Vigilar signos de alarma"
+      ],
+      "redFlags": [
+        "No puede beber o mamar",
+        "Vomita todo",
+        "Convulsiones",
+        "Letárgico o inconsciente",
+        "Estridor en reposo",
+        "Desnutrición grave",
+        "Tiraje subcostal",
+        "Cianosis central",
+        "Frecuencia respiratoria muy elevada para edad"
+      ]
+    },
+    {
+      "topic": "Enfermedad Diarreica Aguda (EDA)",
+      "description": "Diarrea aguda, principal causa de deshidratación en niños. Relacionada con agua no segura y saneamiento inadecuado.",
+      "symptoms": [
+        "deposiciones líquidas aumentadas",
+        "más de 3 deposiciones al día",
+        "puede tener moco",
+        "puede tener sangre (disentería)",
+        "fiebre variable",
+        "vómitos",
+        "dolor abdominal tipo cólico"
+      ],
+      "recommendations": [
+        "Plan de hidratación según grado de deshidratación",
+        "Plan A: prevenir deshidratación (SRO en casa)",
+        "Plan B: tratar deshidratación leve-moderada (SRO 75ml/kg en 4 horas)",
+        "Plan C: deshidratación grave (hidratación IV)",
+        "Zinc por 10-14 días (reduce duración)",
+        "Continuar alimentación",
+        "Lactancia materna a libre demanda",
+        "NO antidiarreicos en niños"
+      ],
+      "redFlags": [
+        "Deshidratación severa (letargia, ojos hundidos, llanto sin lágrimas)",
+        "Sangre en heces abundante",
+        "Vómitos persistentes",
+        "Fiebre alta >39°C",
+        "Distensión abdominal",
+        "Convulsiones",
+        "Menor de 2 meses",
+        "Desnutrición severa concomitante"
+      ]
+    },
+    {
+      "topic": "Parasitosis Intestinal",
+      "description": "Infestación por parásitos intestinales (áscaris, oxiuros, giardias, amebas). Muy prevalente en zonas con saneamiento deficiente.",
+      "symptoms": [
+        "dolor abdominal difuso",
+        "diarrea intermitente",
+        "prurito anal nocturno (oxiuros)",
+        "distensión abdominal",
+        "pérdida de peso o desnutrición",
+        "palidez (anemia por uncinarias)",
+        "evacuación de gusanos visibles",
+        "bruxismo (rechinar dientes)"
+      ],
+      "recommendations": [
+        "Albendazol 400mg dosis única (>2 años)",
+        "Mebendazol 100mg cada 12h x 3 días",
+        "Tratamiento de toda la familia simultáneamente",
+        "Metronidazol si giardiasis o amebiasis",
+        "Desparasitación masiva 2 veces al año en zonas endémicas",
+        "Lavado de manos con agua y jabón",
+        "Agua hervida o clorada",
+        "Lavado de frutas y verduras",
+        "Uso de letrinas o baños",
+        "Cortar uñas cortas"
+      ],
+      "redFlags": [
+        "Obstrucción intestinal (masa de áscaris)",
+        "Colecistitis o pancreatitis (migración de áscaris)",
+        "Anemia severa (uncinariasis masiva)",
+        "Desnutrición grave",
+        "Convulsiones (neurocisticercosis)",
+        "Dolor abdominal agudo severo",
+        "Vómito de gusanos"
+      ]
+    },
+    {
+      "topic": "Pediculosis (Piojos)",
+      "description": "Infestación por piojos del cuero cabelludo. Muy común en escolares, especialmente en condiciones de hacinamiento.",
+      "symptoms": [
+        "picazón intensa del cuero cabelludo",
+        "prurito en nuca y detrás de orejas",
+        "sensación de movimiento en el cabello",
+        "liendres (huevos blancos) adheridas al cabello",
+        "lesiones por rascado",
+        "costras en cuero cabelludo",
+        "adenopatías cervicales",
+        "irritabilidad e insomnio"
+      ],
+      "recommendations": [
+        "Permetrina 1% loción o champú",
+        "Aplicar en cabello seco, dejar 10 minutos, enjuagar",
+        "Repetir a los 7-10 días",
+        "Peinado con lendrera (peine de dientes finos) diariamente",
+        "Remover liendres manualmente",
+        "Revisar y tratar contactos cercanos",
+        "Lavar ropa de cama y sombreros con agua caliente",
+        "No compartir peines, cepillos, gorros",
+        "Revisar toda la familia"
+      ],
+      "redFlags": [
+        "Sobreinfección bacteriana extensa (impétigo)",
+        "Celulitis del cuero cabelludo",
+        "Adenitis cervical supurativa",
+        "Resistencia a tratamiento múltiple",
+        "Eccema severo secundario"
+      ]
+    },
+    {
+      "topic": "Escabiosis (Sarna)",
+      "description": "Infestación cutánea por ácaro Sarcoptes scabiei. Altamente contagiosa en condiciones de hacinamiento.",
+      "symptoms": [
+        "picazón intensa especialmente nocturna",
+        "lesiones en surcos lineales",
+        "ubicación: entre dedos, muñecas, axilas, cintura, genitales",
+        "pápulas y vesículas",
+        "en lactantes: palmas, plantas, cara",
+        "lesiones por rascado",
+        "sobreinfección bacteriana frecuente"
+      ],
+      "recommendations": [
+        "Permetrina 5% crema de cuello a pies",
+        "Aplicar en piel seca, dejar 8-12 horas, bañar",
+        "Repetir a los 7 días",
+        "Ivermectina oral 200mcg/kg (casos severos o epidemias)",
+        "Tratamiento simultáneo de toda la familia y contactos",
+        "Lavar ropa y sábanas con agua caliente",
+        "Sellar objetos no lavables en bolsa x 72 horas",
+        "Antihistamínicos para picazón",
+        "Antibióticos si sobreinfección"
+      ],
+      "redFlags": [
+        "Sarna costrosa (noruega) en inmunosuprimidos",
+        "Sobreinfección bacteriana extensa",
+        "Impétigo bulloso",
+        "Celulitis",
+        "Glomerulonefritis post-estreptocócica",
+        "Epidemia en comunidad"
+      ]
+    },
+    {
+      "topic": "Conjuntivitis",
+      "description": "Inflamación de la conjuntiva ocular. Puede ser viral, bacteriana o alérgica. Muy contagiosa.",
+      "symptoms": [
+        "ojo rojo",
+        "sensación de arenilla o cuerpo extraño",
+        "lagrimeo",
+        "secreción (acuosa en viral, purulenta en bacteriana)",
+        "picazón (alérgica)",
+        "fotofobia leve",
+        "párpados pegados al despertar",
+        "ardor ocular"
+      ],
+      "recommendations": [
+        "Lavado ocular con suero fisiológico frecuente",
+        "Compresas frías para alivio",
+        "Antibiótico tópico si bacteriana (cloranfenicol, tobramicina)",
+        "NO usar corticoides sin indicación oftalmológica",
+        "Higiene de manos estricta",
+        "No tocarse los ojos",
+        "No compartir toallas",
+        "Uso de toalla personal",
+        "Antihistamínicos si alérgica"
+      ],
+      "redFlags": [
+        "Pérdida o disminución de visión",
+        "Dolor ocular intenso",
+        "Fotofobia severa",
+        "Úlcera corneal",
+        "Secreción purulenta abundante en recién nacido",
+        "No mejoría en 48-72 horas con tratamiento",
+        "Antecedente de trauma ocular",
+        "Herpes ocular"
+      ]
+    },
+    {
+      "topic": "Otitis Media Aguda",
+      "description": "Infección del oído medio. Muy frecuente en niños menores de 5 años, especialmente después de resfriados.",
+      "symptoms": [
+        "dolor de oído intenso (otalgia)",
+        "fiebre",
+        "irritabilidad marcada en niños",
+        "dificultad para dormir",
+        "jalarse la oreja (lactantes)",
+        "llanto inconsolable",
+        "otorrea si perforación timpánica",
+        "disminución de audición temporal"
+      ],
+      "recommendations": [
+        "Amoxicilina 80-90 mg/kg/día x 7-10 días",
+        "Paracetamol o ibuprofeno para dolor",
+        "Calor local (bolsa de agua tibia)",
+        "Completar tratamiento antibiótico",
+        "NO usar gotas óticas si perforación",
+        "Control otoscópico a los 10-14 días",
+        "Prevenir resfriados",
+        "Evitar humo de tabaco",
+        "Continuar lactancia materna"
+      ],
+      "redFlags": [
+        "Mastoiditis (inflamación y dolor detrás de oreja)",
+        "Parálisis facial",
+        "Vértigo severo",
+        "Fiebre alta persistente >48h con tratamiento",
+        "Cefalea intensa",
+        "Otorrea persistente >2 semanas",
+        "Menor de 6 meses",
+        "Otitis recurrentes (>3 en 6 meses)"
+      ]
+    },
+    {
+      "topic": "Faringitis Estreptocócica",
+      "description": "Infección bacteriana de garganta por Streptococcus pyogenes. Importante diferenciar de faringitis viral.",
+      "symptoms": [
+        "dolor de garganta intenso de inicio súbito",
+        "fiebre alta >38.5°C",
+        "odinofagia (dolor al tragar)",
+        "amígdalas rojas e inflamadas",
+        "exudado purulento blanco-amarillento",
+        "petequias en paladar",
+        "ganglios cervicales anteriores dolorosos",
+        "ausencia de tos (sugiere bacteria)"
+      ],
+      "recommendations": [
+        "Penicilina benzatínica IM dosis única, o",
+        "Amoxicilina oral x 10 días",
+        "Completar 10 días para prevenir fiebre reumática",
+        "Paracetamol o ibuprofeno para dolor y fiebre",
+        "Líquidos abundantes",
+        "Alimentos blandos y fríos",
+        "Reposo relativo",
+        "Gárgaras con agua tibia y sal",
+        "Test rápido de estreptococo si disponible"
+      ],
+      "redFlags": [
+        "Dificultad respiratoria o estridor",
+        "Babeo excesivo",
+        "Imposibilidad de tragar saliva",
+        "Absceso periamigdalino",
+        "Fiebre reumática (si no se trata)",
+        "Glomerulonefritis post-estreptocócica",
+        "Deshidratación por no poder beber",
+        "Trismus (dificultad para abrir boca)"
+      ]
+    },
+    {
+      "topic": "Bronquiolitis",
+      "description": "Infección viral de bronquiolos en lactantes menores de 2 años. Causa común de hospitalización en época fría.",
+      "symptoms": [
+        "dificultad respiratoria progresiva",
+        "sibilancias (silbido al respirar)",
+        "tos seca persistente",
+        "respiración rápida (taquipnea)",
+        "aleteo nasal",
+        "tiraje intercostal o subcostal",
+        "quejido respiratorio",
+        "rechazo del alimento o pecho",
+        "fiebre leve",
+        "irritabilidad"
+      ],
+      "recommendations": [
+        "Medidas de soporte (no hay tratamiento específico)",
+        "Hidratación adecuada",
+        "Posición semisentada 30-45°",
+        "Alimentación fraccionada más frecuente",
+        "Aspiración suave de secreciones nasales",
+        "Ambiente libre de humo",
+        "Oxígeno si saturación <92%",
+        "Hospitalización si criterios de gravedad",
+        "NO broncodilatadores (controversia)",
+        "Lavado de manos para prevenir contagio"
+      ],
+      "redFlags": [
+        "Frecuencia respiratoria >60/min",
+        "Saturación de oxígeno <92%",
+        "Apneas (pausas respiratorias)",
+        "Cianosis (coloración azulada)",
+        "Letargia o somnolencia excesiva",
+        "Deshidratación o no tolera vía oral",
+        "Tiraje marcado",
+        "Quejido continuo",
+        "Menor de 3 meses",
+        "Prematuro o cardiopatía"
+      ]
+    },
+    {
+      "topic": "Varicela",
+      "description": "Infección viral altamente contagiosa causada por virus varicela-zóster. Común en niños no vacunados.",
+      "symptoms": [
+        "erupción con vesículas (gotas de rocío)",
+        "lesiones en diferentes estadios (máculas, pápulas, vesículas, costras)",
+        "inicia en tronco y cabeza, se extiende",
+        "picazón intensa (prurito)",
+        "fiebre moderada 38-39°C",
+        "malestar general",
+        "puede haber lesiones en mucosas",
+        "costras al secar (no contagiosas)"
+      ],
+      "recommendations": [
+        "Antihistamínicos para picazón (hidroxizina, loratadina)",
+        "Loción de calamina tópica",
+        "Baños con avena coloidal o bicarbonato",
+        "Mantener uñas cortas y limpias",
+        "Paracetamol para fiebre (NO aspirina por riesgo Reye)",
+        "Ropa suelta de algodón",
+        "Aislamiento hasta que todas las lesiones estén en costra",
+        "NO aciclovir rutinario (solo casos especiales)",
+        "Vacunación para prevención"
+      ],
+      "redFlags": [
+        "Sobreinfección bacteriana de lesiones (impétigo, celulitis)",
+        "Neumonía varicelosa",
+        "Encefalitis (ataxia, convulsiones)",
+        "Varicela en embarazadas",
+        "Varicela en recién nacidos",
+        "Varicela en inmunosuprimidos",
+        "Fiebre alta persistente >4 días",
+        "Dificultad respiratoria",
+        "Alteración del estado mental"
+      ]
+    },
+    {
+      "topic": "Impétigo",
+      "description": "Infección bacteriana superficial de la piel. Muy contagiosa, común en niños con mala higiene.",
+      "symptoms": [
+        "lesiones costrosas color miel",
+        "vesículas o ampollas que se rompen",
+        "lesiones que crecen rápidamente",
+        "ubicación: cara (alrededor nariz y boca), extremidades",
+        "picazón leve",
+        "generalmente sin fiebre",
+        "puede aparecer sobre heridas o picaduras",
+        "adenopatías regionales"
+      ],
+      "recommendations": [
+        "Aseo con agua y jabón suave",
+        "Remoción cuidadosa de costras",
+        "Antibiótico tópico (mupirocina, ácido fusídico)",
+        "Antibiótico oral si extenso (cefalexina, amoxicilina-clavulánico)",
+        "Cortar uñas cortas",
+        "Higiene de manos frecuente",
+        "No compartir toallas",
+        "Ropa y sábanas limpias",
+        "Evitar contacto con otros niños hasta 24h de tratamiento"
+      ],
+      "redFlags": [
+        "Extensión rápida a pesar de tratamiento",
+        "Celulitis (infección profunda)",
+        "Fiebre alta",
+        "Lesiones bullosas extensas",
+        "Glomerulonefritis post-estreptocócica",
+        "Sepsis (muy raro)",
+        "Recién nacido con lesiones"
+      ]
+    },
+    {
+      "topic": "Infarto Agudo de Miocardio",
+      "description": "Obstrucción de arteria coronaria que causa necrosis del músculo cardíaco. EMERGENCIA MÉDICA MÁXIMA.",
+      "symptoms": [
+        "dolor torácico opresivo intenso >20 minutos",
+        "sensación de peso o presión en el pecho",
+        "irradiación a brazo izquierdo, mandíbula, cuello, espalda",
+        "sudoración fría profusa",
+        "náuseas y vómitos",
+        "dificultad respiratoria",
+        "ansiedad o sensación de muerte inminente",
+        "palidez",
+        "puede ser atípico en diabéticos y mujeres"
+      ],
+      "recommendations": [
+        "EMERGENCIA - LLAMAR AMBULANCIA INMEDIATAMENTE 911/106",
+        "NO ESPERAR - Cada minuto cuenta",
+        "Aspirina 300mg masticar inmediatamente",
+        "Reposo absoluto en posición semisentada",
+        "Aflojar ropa ajustada",
+        "NO conducir por cuenta propia al hospital",
+        "Traslado urgente a hospital con UCI",
+        "Angioplastia primaria o trombolisis",
+        "Tiempo puerta-balón <90 minutos es crítico"
+      ],
+      "redFlags": [
+        "TODO infarto es emergencia máxima",
+        "Dolor torácico >20 minutos",
+        "No alivia con reposo ni nitroglicerina",
+        "Asociado a sudoración, disnea",
+        "Síncope o pérdida de conciencia",
+        "Arritmias",
+        "Shock cardiogénico",
+        "Paro cardiorrespiratorio"
+      ]
+    },
+    {
+      "topic": "Accidente Cerebrovascular (ACV)",
+      "description": "Interrupción del flujo sanguíneo cerebral por isquemia o hemorragia. EMERGENCIA NEUROLÓGICA.",
+      "symptoms": [
+        "debilidad súbita de un lado del cuerpo",
+        "asimetría facial (boca torcida)",
+        "dificultad para hablar o articular palabras",
+        "dificultad para entender",
+        "pérdida súbita de visión en uno o ambos ojos",
+        "dolor de cabeza súbito e intenso",
+        "pérdida de equilibrio o coordinación",
+        "confusión súbita",
+        "adormecimiento de cara, brazo o pierna"
+      ],
+      "recommendations": [
+        "EMERGENCIA - CÓDIGO ACV - LLAMAR 911/106",
+        "Test FAST: Face (cara), Arms (brazos), Speech (habla), Time (tiempo)",
+        "NO dar nada por boca (riesgo de aspiración)",
+        "Traslado INMEDIATO a hospital con neurología",
+        "Tiempo crítico: ventana <4.5 horas para trombolisis",
+        "Si isquémico: trombolisis o trombectomía",
+        "Cada minuto perdido = pérdida cerebral",
+        "Posición semi-incorporada",
+        "Control de glicemia y presión"
+      ],
+      "redFlags": [
+        "TODOS los síntomas de ACV son emergencia",
+        "Pérdida de conciencia",
+        "Convulsiones",
+        "Vómitos en proyectil",
+        "Cefalea intensa súbita (hemorragia)",
+        "Deterioro neurológico progresivo",
+        "Cualquier déficit focal agudo"
+      ]
+    },
+    {
+      "topic": "Crisis Hipertensiva",
+      "description": "Elevación severa de presión arterial >180/120 mmHg con o sin daño a órgano blanco. Emergencia médica.",
+      "symptoms": [
+        "presión arterial muy elevada >180/120",
+        "cefalea intensa",
+        "visión borrosa o pérdida visual",
+        "dolor torácico",
+        "dificultad respiratoria",
+        "náuseas y vómitos",
+        "epistaxis (sangrado nasal)",
+        "confusión o alteración mental",
+        "convulsiones (eclampsia en embarazo)"
+      ],
+      "recommendations": [
+        "Traslado urgente a emergencia",
+        "Monitoreo estrecho de presión arterial",
+        "Reducción gradual y controlada de PA (NO brusca)",
+        "Antihipertensivos IV en emergencia hipertensiva",
+        "Buscar y tratar daño a órgano blanco",
+        "Identificar causa desencadenante",
+        "NO automedicación",
+        "Seguimiento estricto post-crisis"
+      ],
+      "redFlags": [
+        "Presión arterial >180/120 mmHg",
+        "Encefalopatía hipertensiva",
+        "Edema agudo de pulmón",
+        "Síndrome coronario agudo",
+        "ACV hemorrágico o isquémico",
+        "Eclampsia en embarazada",
+        "Disección aórtica",
+        "Insuficiencia renal aguda"
+      ]
+    },
+    {
+      "topic": "Hipoglucemia",
+      "description": "Nivel bajo de glucosa en sangre <70 mg/dL. Común y peligrosa en diabéticos tratados con insulina o hipoglucemiantes.",
+      "symptoms": [
+        "sudoración",
+        "temblor",
+        "palpitaciones",
+        "hambre intensa",
+        "ansiedad",
+        "mareo",
+        "confusión",
+        "visión borrosa",
+        "debilidad",
+        "irritabilidad",
+        "dificultad para hablar",
+        "palidez"
+      ],
+      "recommendations": [
+        "Regla del 15-15:",
+        "15g carbohidratos simples (3-4 cucharaditas azúcar, 1/2 vaso jugo, 3-4 caramelos)",
+        "Esperar 15 minutos",
+        "Revaluar glucosa",
+        "Repetir si aún <70 mg/dL",
+        "Consumir snack con proteína después de normalizar",
+        "Identificar causa (exceso medicamento, poca comida, ejercicio)",
+        "Ajustar tratamiento si episodios frecuentes",
+        "Educación al paciente y familia"
+      ],
+      "redFlags": [
+        "Pérdida de conciencia",
+        "Convulsiones",
+        "Imposibilidad de ingerir alimentos (vía oral)",
+        "Glucosa <40 mg/dL",
+        "No respuesta a tratamiento oral",
+        "Hipoglucemia severa recurrente",
+        "Necesidad de glucagón IM o dextrosa IV",
+        "Hipoglucemia nocturna desapercibida"
+      ]
+    },
+    {
+      "topic": "Cetoacidosis Diabética",
+      "description": "Complicación aguda grave de diabetes con hiperglucemia, cetosis y acidosis. Emergencia metabólica.",
+      "symptoms": [
+        "glucosa muy elevada >250 mg/dL",
+        "poliuria intensa",
+        "polidipsia extrema",
+        "náuseas y vómitos",
+        "dolor abdominal",
+        "respiración de Kussmaul (rápida y profunda)",
+        "aliento con olor a frutas (acetona)",
+        "debilidad extrema",
+        "confusión o alteración mental",
+        "deshidratación severa"
+      ],
+      "recommendations": [
+        "EMERGENCIA MÉDICA - Hospitalización inmediata",
+        "Hidratación IV agresiva (solución salina)",
+        "Insulina IV en infusión continua",
+        "Corrección de electrolitos (especialmente potasio)",
+        "Corrección de acidosis",
+        "Búsqueda y tratamiento de factor desencadenante",
+        "Monitoreo estrecho en UCI o emergencia",
+        "Prevención: nunca suspender insulina",
+        "Educación sobre días de enfermedad"
+      ],
+      "redFlags": [
+        "Presencia de cetoacidosis es emergencia",
+        "Alteración del estado mental severa",
+        "Shock",
+        "Edema cerebral (especialmente en niños)",
+        "pH <7.0",
+        "Potasio muy bajo o muy alto",
+        "Insuficiencia renal",
+        "Arritmias cardíacas"
+      ]
+    }
+  ]
+}
+

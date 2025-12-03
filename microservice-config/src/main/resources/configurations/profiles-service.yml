@@ -1,0 +1,94 @@
+server:
+  port: 8092
+
+spring:
+  application:
+    name: profiles-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/profiles_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: ${MYSQL_ROOT_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        naming:
+          physical-strategy: com.microservice.profiles.shared.infrastructure.persistence.jpa.configuration.strategy.SnakeCaseWithPluralizedTablePhysicalNamingStrategy
+
+  cloud:
+    function:
+      definition: userCreatedEvent;userUpdatedEvent
+    stream:
+      bindings:
+        userCreatedEvent-in-0:
+          destination: user-events
+          content-type: application/json
+          group: profiles-service-group
+          binder: rabbit
+        userUpdatedEvent-in-0:
+          destination: user-update-events
+          content-type: application/json
+          group: profiles-service-group
+          binder: rabbit
+      binders:
+        rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: rabbitmq
+                port: 5672
+                username: ${RABBITMQ_USER:ayllucare}
+                password: ${RABBITMQ_PASSWORD}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-service:8761/eureka/
+  instance:
+    prefer-ip-address: false
+    hostname: profiles-service
+
+authorization:
+  jwt:
+    secret: ${JWT_SECRET:WriteHereYourSecretStringForTokenSigningCredentials}
+    expiration: 7
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  cloud:
+    stream:
+      rabbit:
+        binder:
+          connection-timeout: 30000
+          requested-heartbeat: 30
+      binders:
+        rabbit:
+          environment:
+            spring:
+              rabbitmq:
+                connection-timeout: 30000
+                requested-heartbeat: 30
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+    rabbit:
+      enabled: true
+

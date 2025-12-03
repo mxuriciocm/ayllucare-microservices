@@ -1,0 +1,52 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: iam-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/iam_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: ${MYSQL_ROOT_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-service:8761/eureka/
+  instance:
+    prefer-ip-address: false
+    hostname: iam-service
+
+authorization:
+  jwt:
+    secret: ${JWT_SECRET:WriteHereYourSecretStringForTokenSigningCredentials}
+    expiration:
+      days: 7
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+

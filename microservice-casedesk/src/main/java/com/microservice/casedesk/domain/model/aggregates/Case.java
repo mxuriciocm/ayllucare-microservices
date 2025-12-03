@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
+@Table(name = "cases")
 @NoArgsConstructor
 public class Case extends AuditableAbstractAggregateRoot<Case> {
 

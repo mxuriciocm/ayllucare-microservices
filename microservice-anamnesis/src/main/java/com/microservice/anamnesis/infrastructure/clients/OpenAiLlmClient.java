@@ -2,11 +2,13 @@ package com.microservice.anamnesis.infrastructure.clients;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microservice.anamnesis.application.clients.KnowledgeBaseClient;
 import com.microservice.anamnesis.application.clients.LlmClient;
 import com.microservice.anamnesis.application.dto.ProfileSnapshot;
 import com.microservice.anamnesis.domain.model.aggregates.AnamnesisSession;
 import com.microservice.anamnesis.domain.model.valueobjects.AnamnesisSummary;
 import com.microservice.anamnesis.domain.model.valueobjects.ConversationMessage;
+import com.microservice.anamnesis.domain.model.valueobjects.MedicalKnowledge;
 import com.microservice.anamnesis.domain.model.valueobjects.SenderType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,11 @@ public class OpenAiLlmClient implements LlmClient {
     private static final Logger logger = LoggerFactory.getLogger(OpenAiLlmClient.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final RestTemplate restTemplate = new RestTemplate();
+    private final KnowledgeBaseClient knowledgeBaseClient;
+
+    public OpenAiLlmClient(KnowledgeBaseClient knowledgeBaseClient) {
+        this.knowledgeBaseClient = knowledgeBaseClient;
+    }
 
     @Value("${llm.provider:gemini}")
     private String provider;
@@ -67,11 +74,23 @@ public class OpenAiLlmClient implements LlmClient {
         }
 
         try {
-            logger.info("Generating LLM response for session: {} using provider: {}", session.getId(), provider);
+            logger.info("Generating LLM response for session: {} using provider: {} with RAG", session.getId(), provider);
 
-            String systemPrompt = buildSystemPrompt(profile, false);
+            // Step 1: Extract context from the latest patient message and session
+            String searchQuery = extractSearchQuery(session);
+
+            // Step 2: Query Ayllucare knowledge base (RAG - Retrieval)
+            List<MedicalKnowledge> relevantKnowledge = List.of();
+            if (knowledgeBaseClient.isAvailable()) {
+                relevantKnowledge = knowledgeBaseClient.searchKnowledge(searchQuery, 3);
+                logger.info("Retrieved {} relevant knowledge entries from Ayllucare dataset", relevantKnowledge.size());
+            }
+
+            // Step 3: Build enriched prompt with knowledge base context (RAG - Augmented Generation)
+            String systemPrompt = buildSystemPrompt(profile, false, relevantKnowledge);
             String conversationContext = buildConversationContext(session);
 
+            // Step 4: Generate response using LLM with augmented context
             if ("gemini".equalsIgnoreCase(provider)) {
                 return callGeminiAPI(systemPrompt, conversationContext, false);
             } else {
@@ -92,9 +111,17 @@ public class OpenAiLlmClient implements LlmClient {
         }
 
         try {
-            logger.info("Generating anamnesis summary for session: {} using provider: {}", session.getId(), provider);
+            logger.info("Generating anamnesis summary for session: {} using provider: {} with RAG", session.getId(), provider);
 
-            String systemPrompt = buildSystemPrompt(profile, true);
+            // Query knowledge base for summary context
+            String searchQuery = extractSearchQuery(session);
+            List<MedicalKnowledge> relevantKnowledge = List.of();
+            if (knowledgeBaseClient.isAvailable()) {
+                relevantKnowledge = knowledgeBaseClient.searchKnowledge(searchQuery, 3);
+                logger.info("Retrieved {} relevant knowledge entries for summary", relevantKnowledge.size());
+            }
+
+            String systemPrompt = buildSystemPrompt(profile, true, relevantKnowledge);
             String conversationContext = buildConversationContext(session);
 
             String summaryJson;
@@ -198,7 +225,7 @@ public class OpenAiLlmClient implements LlmClient {
         return "Entiendo sus síntomas. ¿Podría proporcionar más detalles sobre la duración e intensidad?";
     }
 
-    private String buildSystemPrompt(ProfileSnapshot profile, boolean forSummary) {
+    private String buildSystemPrompt(ProfileSnapshot profile, boolean forSummary, List<MedicalKnowledge> relevantKnowledge) {
         StringBuilder prompt = new StringBuilder();
 
         prompt.append("Eres un asistente médico virtual especializado en realizar anamnesis médicas ");
@@ -211,6 +238,35 @@ public class OpenAiLlmClient implements LlmClient {
         }
 
         prompt.append("Identifica posibles señales de alarma (red flags) que requieran atención urgente.\n\n");
+
+        // Add Ayllucare Knowledge Base context (RAG)
+        if (!relevantKnowledge.isEmpty()) {
+            prompt.append("===== CONOCIMIENTO MÉDICO DE AYLLUCARE =====\n");
+            prompt.append("Utiliza la siguiente información del dataset propio de AylluCare como referencia:\n\n");
+
+            for (MedicalKnowledge knowledge : relevantKnowledge) {
+                prompt.append("► ").append(knowledge.topic()).append(":\n");
+                prompt.append("  Descripción: ").append(knowledge.description()).append("\n");
+
+                if (!knowledge.symptoms().isEmpty()) {
+                    prompt.append("  Síntomas comunes: ").append(String.join(", ", knowledge.symptoms())).append("\n");
+                }
+
+                if (!knowledge.recommendations().isEmpty()) {
+                    prompt.append("  Recomendaciones: ").append(String.join("; ", knowledge.recommendations())).append("\n");
+                }
+
+                if (!knowledge.redFlags().isEmpty()) {
+                    prompt.append("  ⚠️ SEÑALES DE ALARMA: ").append(String.join(", ", knowledge.redFlags())).append("\n");
+                }
+
+                prompt.append("\n");
+            }
+            prompt.append("===== FIN DEL CONOCIMIENTO DE AYLLUCARE =====\n\n");
+
+            prompt.append("IMPORTANTE: Basa tus preguntas y evaluación en el conocimiento médico de AylluCare proporcionado arriba. ");
+            prompt.append("Presta especial atención a las señales de alarma mencionadas.\n\n");
+        }
 
         if (profile != null && profile.hasConsentForAI()) {
             prompt.append("INFORMACIÓN DEL PACIENTE:\n");
@@ -228,6 +284,32 @@ public class OpenAiLlmClient implements LlmClient {
         }
 
         return prompt.toString();
+    }
+
+    /**
+     * Extracts search query from session to query knowledge base.
+     * Uses initial reason and latest patient messages.
+     */
+    private String extractSearchQuery(AnamnesisSession session) {
+        StringBuilder query = new StringBuilder();
+
+        // Add initial reason
+        if (session.getInitialReason() != null && !session.getInitialReason().isBlank()) {
+            query.append(session.getInitialReason()).append(" ");
+        }
+
+        // Add latest patient messages (last 3)
+        List<ConversationMessage> messages = session.getMessages();
+        int startIndex = Math.max(0, messages.size() - 3);
+
+        for (int i = startIndex; i < messages.size(); i++) {
+            ConversationMessage message = messages.get(i);
+            if (message.getSenderType() == SenderType.PATIENT) {
+                query.append(message.getContent()).append(" ");
+            }
+        }
+
+        return query.toString().trim();
     }
 
     private String buildConversationContext(AnamnesisSession session) {

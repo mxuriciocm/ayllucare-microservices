@@ -1,0 +1,87 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # IAM Service
+        - id: iam-service
+          uri: lb://iam-service
+          predicates:
+            - Path=/api/v1/authentication/**,/api/v1/users/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
+
+        # Profiles Service
+        - id: profiles-service
+          uri: lb://profiles-service
+          predicates:
+            - Path=/api/v1/profiles/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
+
+        # Anamnesis Service
+        - id: anamnesis-service
+          uri: lb://anamnesis-service
+          predicates:
+            - Path=/api/v1/anamnesis/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
+
+        # Triage Service
+        - id: triage-service
+          uri: lb://triage-service
+          predicates:
+            - Path=/api/v1/triage/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
+
+        # CaseDesk Service
+        - id: casedesk-service
+          uri: lb://casedesk-service
+          predicates:
+            - Path=/api/v1/cases/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /api/$\{segment}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-service:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: false
+    hostname: gateway-service
+
+authorization:
+  jwt:
+    secret: ${JWT_SECRET:WriteHereYourSecretStringForTokenSigningCredentials}
+    expiration:
+      days: 7
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway,metrics
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+

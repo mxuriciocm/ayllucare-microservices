@@ -1,0 +1,232 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # INFRASTRUCTURE
+  # ==========================================
+
+  mysql:
+    image: mysql:8.0
+    container_name: ayllucare-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ayllucare2024
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-payllucare2024"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+      start_period: 40s
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: ayllucare-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ayllucare
+      RABBITMQ_DEFAULT_PASS: ayllucare123
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      timeout: 30s
+      retries: 10
+      interval: 10s
+      start_period: 60s
+
+  # ==========================================
+  # CONFIG SERVER (arranca primero)
+  # ==========================================
+
+  config-service:
+    build:
+      context: ./microservice-config
+      dockerfile: Dockerfile
+    container_name: ayllucare-config-service
+    ports:
+      - "8888:8888"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      timeout: 10s
+      retries: 15
+      interval: 10s
+      start_period: 30s
+
+  # ==========================================
+  # EUREKA (depende de config-service)
+  # ==========================================
+
+  eureka-service:
+    build:
+      context: ./microservice-eureka
+      dockerfile: Dockerfile
+    container_name: ayllucare-eureka-service
+    environment:
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      config-service:
+        condition: service_healthy
+    ports:
+      - "8761:8761"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      timeout: 10s
+      retries: 15
+      interval: 10s
+      start_period: 60s
+
+  # ==========================================
+  # MICROSERVICES
+  # ==========================================
+
+  iam-service:
+    build:
+      context: ./microservice-iam
+      dockerfile: Dockerfile
+    container_name: ayllucare-iam-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - MYSQL_ROOT_PASSWORD=ayllucare2024
+      - JWT_SECRET=AylluCareSecureJwtSecretKeyForHS512AlgorithmThatMustBeAtLeast64CharactersLongToMeetTheSecurityRequirementsForProductionEnvironment2024
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8090:8090"
+    restart: unless-stopped
+
+  profiles-service:
+    build:
+      context: ./microservice-profiles
+      dockerfile: Dockerfile
+    container_name: ayllucare-profiles-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - MYSQL_ROOT_PASSWORD=ayllucare2024
+      - RABBITMQ_USER=ayllucare
+      - RABBITMQ_PASSWORD=ayllucare123
+      - JWT_SECRET=AylluCareSecureJwtSecretKeyForHS512AlgorithmThatMustBeAtLeast64CharactersLongToMeetTheSecurityRequirementsForProductionEnvironment2024
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "8092:8092"
+    restart: unless-stopped
+
+  anamnesis-service:
+    build:
+      context: ./microservice-anamnesis
+      dockerfile: Dockerfile
+    container_name: ayllucare-anamnesis-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - MYSQL_ROOT_PASSWORD=ayllucare2024
+      - RABBITMQ_USER=ayllucare
+      - RABBITMQ_PASSWORD=ayllucare123
+      - GEMINI_API_KEY=AIzaSyD64KxzQb1Dpur5PgONMJCQP4yw5wZqv2c
+      - JWT_SECRET=AylluCareSecureJwtSecretKeyForHS512AlgorithmThatMustBeAtLeast64CharactersLongToMeetTheSecurityRequirementsForProductionEnvironment2024
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "8093:8093"
+    restart: unless-stopped
+
+  triage-service:
+    build:
+      context: ./microservice-triage
+      dockerfile: Dockerfile
+    container_name: ayllucare-triage-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - MYSQL_ROOT_PASSWORD=ayllucare2024
+      - RABBITMQ_USER=ayllucare
+      - RABBITMQ_PASSWORD=ayllucare123
+      - JWT_SECRET=AylluCareSecureJwtSecretKeyForHS512AlgorithmThatMustBeAtLeast64CharactersLongToMeetTheSecurityRequirementsForProductionEnvironment2024
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "8094:8094"
+    restart: unless-stopped
+
+  casedesk-service:
+    build:
+      context: ./microservice-casedesk
+      dockerfile: Dockerfile
+    container_name: ayllucare-casedesk-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - MYSQL_ROOT_PASSWORD=ayllucare2024
+      - RABBITMQ_USER=ayllucare
+      - RABBITMQ_PASSWORD=ayllucare123
+      - JWT_SECRET=AylluCareSecureJwtSecretKeyForHS512AlgorithmThatMustBeAtLeast64CharactersLongToMeetTheSecurityRequirementsForProductionEnvironment2024
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "8095:8095"
+    restart: unless-stopped
+
+  gateway-service:
+    build:
+      context: ./microservice-gateway
+      dockerfile: Dockerfile
+    container_name: ayllucare-gateway-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      iam-service:
+        condition: service_started
+      profiles-service:
+        condition: service_started
+      anamnesis-service:
+        condition: service_started
+      triage-service:
+        condition: service_started
+      casedesk-service:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  rabbitmq_data:
+
